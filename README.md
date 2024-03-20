@@ -1,2 +1,2 @@
 # PROYECTO-DAM-Mohamed
-Este repositorio contiene el código fuente y la documentación de mi proyecto final de curso .
+AutoLabib Scan es una aplicación móvil desarrollada utilizando Flutter y Firebase que proporciona a los usuarios información detallada sobre vehículos a partir de su matrícula o número de bastidor. Con características como almacenamiento de matrículas favoritas, lectura de matrículas desde imágenes, búsqueda por bastidor o matrícula, y generación de informes detallados sobre el historial del vehículo, AutoLabib Scan está diseñado para ser una herramienta útil y práctica para los entusiastas de los automóviles y los compradores de vehículos usados.
