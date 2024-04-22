@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,8 +20,9 @@ import com.google.firebase.auth.FirebaseAuth;
 public class loginActivity extends AppCompatActivity {
     // Declaración de variables
     private Button btnLogin;
-    private TextView txtEmail, txtPassword;
+    private EditText edtEmail, edtPassword;
     private FirebaseAuth mAuth;
+    private TextView txtRegisterRedirect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,16 +34,27 @@ public class loginActivity extends AppCompatActivity {
 
         // Referencia elementos del layout
         btnLogin = findViewById(R.id.btnLogin);
-        txtEmail = findViewById(R.id.txtEmail);
-        txtPassword = findViewById(R.id.txtPassword);
+        edtEmail = findViewById(R.id.edtEmail);
+        edtPassword = findViewById(R.id.edtPassword);
+        txtRegisterRedirect = findViewById(R.id.txtRegisterRedirect);
+
+        //Accion onClick en redirigir al registro
+        txtRegisterRedirect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Redirecciona a la pantalla de registro
+                Intent intent = new Intent(loginActivity.this, registerActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // Configuración del Listener para el botón de inicio de sesión
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Obtención de los valores de los campos de correo electrónico y contraseña
-                String emailUser = txtEmail.getText().toString().trim();
-                String passwordUser = txtPassword.getText().toString().trim();
+                String emailUser = edtEmail.getText().toString().trim();
+                String passwordUser = edtPassword.getText().toString().trim();
 
                 // Verificación de si los campos están vacíos
                 if (emailUser.isEmpty() && passwordUser.isEmpty()) {
