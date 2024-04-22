@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "388872684081",
+    "project_id": "autolabibscan",
+    "storage_bucket": "autolabibscan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:388872684081:android:39af72f5c74c25e69e4b10",
+        "android_client_info": {
+          "package_name": "iesmm.pmdm.autolabibscan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "388872684081-9sgjsvqisrjvrju9uoqb6baa7rdkpf1t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDA3ApuunVKNpgHHu74-3ROgyEr-KZpJPw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "388872684081-9sgjsvqisrjvrju9uoqb6baa7rdkpf1t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
