@@ -79,7 +79,7 @@ public class loginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Si la operación es exitosa, redirigir a la actividad principal
                             finish();
-                            startActivity(new Intent(loginActivity.this, MainActivity.class));
+                            startActivity(new Intent(loginActivity.this, userDashboardActivity.class));
                         } else {
                             // Mostrar un mensaje de error si la operación falla
                             Toast.makeText(loginActivity.this, "No se pudo iniciar sesión. Verifique sus credenciales e inténtelo de nuevo.", Toast.LENGTH_SHORT).show();

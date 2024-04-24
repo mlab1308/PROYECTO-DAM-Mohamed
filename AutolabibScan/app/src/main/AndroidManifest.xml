@@ -13,6 +13,12 @@
         android:theme="@style/Theme.AutolabibScan"
         tools:targetApi="31">
         <activity
+            android:name=".userDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".adminDashboardActivity"
+            android:exported="false" />
+        <activity
             android:name=".registerActivity"
             android:exported="false" />
         <activity
