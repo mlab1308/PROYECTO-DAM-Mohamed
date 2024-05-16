@@ -1,8 +1,10 @@
-package iesmm.pmdm.autolabibscan;
+package iesmm.pmdm.autolabibscan.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import iesmm.pmdm.autolabibscan.R;
 
 public class adminDashboardActivity extends AppCompatActivity {
 

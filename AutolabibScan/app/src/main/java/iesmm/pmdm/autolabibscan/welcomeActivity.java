@@ -11,6 +11,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import iesmm.pmdm.autolabibscan.Activities.loginActivity;
+
 public class welcomeActivity extends AppCompatActivity {
     //Variables
     private static int SPLASH_DURACION = 3000;

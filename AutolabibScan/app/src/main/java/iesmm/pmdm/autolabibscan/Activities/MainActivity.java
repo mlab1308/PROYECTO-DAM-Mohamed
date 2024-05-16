@@ -1,10 +1,12 @@
-package iesmm.pmdm.autolabibscan;
+package iesmm.pmdm.autolabibscan.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 
 import android.os.Bundle;
 import android.view.WindowManager;
+
+import iesmm.pmdm.autolabibscan.R;
 
 public class MainActivity extends AppCompatActivity {
 
