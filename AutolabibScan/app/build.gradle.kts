@@ -93,4 +93,10 @@ dependencies {
 
     // Add the dependencies for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries
+
+    //API OCR
+    implementation("com.github.rmtheis:tess-two:9.1.0")
+
+    //Navbar
+    implementation ("com.google.android.material:material:1.11.0-alpha01")
 }
