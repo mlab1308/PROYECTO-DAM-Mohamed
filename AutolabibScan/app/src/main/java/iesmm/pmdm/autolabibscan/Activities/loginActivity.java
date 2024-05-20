@@ -1,9 +1,5 @@
 package iesmm.pmdm.autolabibscan.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +9,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -27,21 +27,23 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
+import com.google.firebase.database.ValueEventListener;
 
 import iesmm.pmdm.autolabibscan.R;
 
 public class loginActivity extends AppCompatActivity {
+    private final int RC_SIGN_IN = 20;
     // Declaración de variables
     private Button btnLogin;
     private ImageButton btnGoogle;
     private EditText edtEmail, edtPassword;
     private FirebaseAuth mAuth;
-    private FirebaseDatabase dataBase;
+    private FirebaseDatabase database;
     private GoogleSignInClient mGoogleSignInClient;
-    private final int RC_SIGN_IN = 20;
     private TextView txtRegisterRedirect;
 
     @Override
@@ -68,12 +70,12 @@ public class loginActivity extends AppCompatActivity {
 
         // Inicialización de FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
-        dataBase = FirebaseDatabase.getInstance();
+        database = FirebaseDatabase.getInstance();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client))
                 .requestEmail().build();
 
-        mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         btnGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,8 +83,6 @@ public class loginActivity extends AppCompatActivity {
                 googleSignIn();
             }
         });
-
-
 
         // Configuración del Listener para el botón de inicio de sesión
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -106,21 +106,21 @@ public class loginActivity extends AppCompatActivity {
 
     private void googleSignIn() {
         Intent intent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(intent,RC_SIGN_IN);
+        startActivityForResult(intent, RC_SIGN_IN);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode==RC_SIGN_IN){
+        if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
-            try{
+            try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuth(account.getIdToken());
-            }catch (Exception e){
-                Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.d("DEBUG", e.getMessage());
             }
 
@@ -129,25 +129,50 @@ public class loginActivity extends AppCompatActivity {
 
     private void firebaseAuth(String idToken) {
 
-        AuthCredential credential= GoogleAuthProvider.getCredential(idToken,null);
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
 
-                            HashMap<String,Object> map = new HashMap<>();
-                            map.put("id",user.getUid());
-                            map.put("name",user.getDisplayName());
-                            map.put("profile",user.getPhotoUrl().toString());
+                            DatabaseReference userRef = database.getReference().child("users").child(user.getUid());
 
-                            dataBase.getReference().child("users").child(user.getUid()).setValue(map);
+                            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()) {
+                                        String role = snapshot.child("role").getValue(String.class);
+                                        // Verificar el rol del usuario y redirigir a la actividad correspondiente
+                                        if (role != null) {
+                                            if (role.equals("admin")) {
+                                                startActivity(new Intent(loginActivity.this, adminDashboardActivity.class));
+                                            } else if (role.equals("user")) {
+                                                startActivity(new Intent(loginActivity.this, userDashboardActivity.class));
+                                            } else {
+                                                // Si el rol no está definido correctamente
+                                                Toast.makeText(loginActivity.this, "Rol de usuario no válido.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        } else {
+                                            // Si no se encuentra el rol del usuario
+                                            Toast.makeText(loginActivity.this, "Rol de usuario no encontrado.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    } else {
+                                        // Si no se encuentra la información del usuario
+                                        Toast.makeText(loginActivity.this, "Información de usuario no encontrada.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
 
-                            Intent intent = new Intent(loginActivity.this, userDashboardActivity.class);
-                            startActivity(intent);
-                        }else{
-                            Toast.makeText(loginActivity.this,"error, task auth fallida",Toast.LENGTH_SHORT).show();
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    // Manejar cualquier error de base de datos
+                                    Toast.makeText(loginActivity.this, "Error de base de datos: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                        } else {
+                            Toast.makeText(loginActivity.this, "error, task auth fallida", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -155,16 +180,47 @@ public class loginActivity extends AppCompatActivity {
 
     // Método para iniciar sesión de usuario con correo electrónico y contraseña
     private void loginUser(String emailUser, String passwordUser) {
-        // Utilizar el método signInWithEmailAndPassword de FirebaseAuth
         mAuth.signInWithEmailAndPassword(emailUser, passwordUser)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        // Manejar el resultado de la operación de inicio de sesión
                         if (task.isSuccessful()) {
-                            // Si la operación es exitosa, redirigir a la actividad principal
-                            finish();
-                            startActivity(new Intent(loginActivity.this, userDashboardActivity.class));
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            String userId = user.getUid();
+
+                            // Obtener la referencia del usuario en la base de datos
+                            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+
+                            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()) {
+                                        String role = snapshot.child("role").getValue(String.class);
+                                        // Verificar el rol del usuario y redirigir a la actividad correspondiente
+                                        if (role != null) {
+                                            if (role.equals("admin")) {
+                                                startActivity(new Intent(loginActivity.this, adminDashboardActivity.class));
+                                            } else if (role.equals("user")) {
+                                                startActivity(new Intent(loginActivity.this, userDashboardActivity.class));
+                                            } else {
+                                                // Si el rol no está definido correctamente
+                                                Toast.makeText(loginActivity.this, "Rol de usuario no válido.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        } else {
+                                            // Si no se encuentra el rol del usuario
+                                            Toast.makeText(loginActivity.this, "Rol de usuario no encontrado.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    } else {
+                                        // Si no se encuentra la información del usuario
+                                        Toast.makeText(loginActivity.this, "Información de usuario no encontrada.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    Toast.makeText(loginActivity.this, "Error de base de datos: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         } else {
                             // Mostrar un mensaje de error si la operación falla
                             Toast.makeText(loginActivity.this, "No se pudo iniciar sesión. Verifique sus credenciales e inténtelo de nuevo.", Toast.LENGTH_SHORT).show();

@@ -15,6 +15,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 import iesmm.pmdm.autolabibscan.R;
 
@@ -25,6 +28,7 @@ public class registerActivity extends AppCompatActivity {
     private TextView txtLoginRedirect;
 
     private FirebaseAuth mAuth;
+    private FirebaseDatabase dataBase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,7 @@ public class registerActivity extends AppCompatActivity {
 
         // Inicialización de Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+        dataBase = FirebaseDatabase.getInstance();
 
         // Referencia de los elementos del layout
         edtEmail = findViewById(R.id.edtEmail);
@@ -66,17 +71,33 @@ public class registerActivity extends AppCompatActivity {
     }
 
     // Método para registrar al usuario en Firebase Auth
-    private void registerUser(String email, String password) {
+    private void registerUser(final String email, final String password) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Registro exitoso
-                            Toast.makeText(registerActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
-                            // Redirección a la actividad de inicio de sesión después del registro exitoso
-                            startActivity(new Intent(registerActivity.this, loginActivity.class));
-                            finish(); // Finaliza esta actividad para evitar que el usuario pueda volver atrás al registro
+                            String userId = mAuth.getCurrentUser().getUid();
+                            HashMap<String, Object> map = new HashMap<>();
+                            map.put("id", userId);
+                            map.put("email", email);
+                            map.put("role", "user"); // Cambia a "admin" si es necesario
+
+                            dataBase.getReference().child("users").child(userId).setValue(map)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(registerActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+                                                // Redirección a la actividad de inicio de sesión después del registro exitoso
+                                                startActivity(new Intent(registerActivity.this, loginActivity.class));
+                                                finish(); // Finaliza esta actividad para evitar que el usuario pueda volver atrás al registro
+                                            } else {
+                                                Toast.makeText(registerActivity.this, "Error al registrar en la base de datos. Inténtelo de nuevo.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
                         } else {
                             // Registro fallido
                             Toast.makeText(registerActivity.this, "Error al registrar. Inténtelo de nuevo.", Toast.LENGTH_SHORT).show();
