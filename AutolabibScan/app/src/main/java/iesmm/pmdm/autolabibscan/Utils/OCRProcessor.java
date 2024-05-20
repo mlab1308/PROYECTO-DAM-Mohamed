@@ -12,7 +12,7 @@ public class OCRProcessor {
     public OCRProcessor(Context context) {
         tessBaseAPI = new TessBaseAPI();
         String dataPath = context.getFilesDir() + "/";
-        tessBaseAPI.init(dataPath, "spa"); // Asegúrate de que el idioma corresponde a los datos de entrenamiento que tienes
+        tessBaseAPI.init(dataPath, "spa"); 
 
     }
 
