@@ -11,6 +11,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.FirebaseApp;
+
 import iesmm.pmdm.autolabibscan.Activities.loginActivity;
 
 public class welcomeActivity extends AppCompatActivity {
@@ -30,6 +32,7 @@ public class welcomeActivity extends AppCompatActivity {
         //Animations
         topAnim = AnimationUtils.loadAnimation(this, R.anim.top_animation);
         bottomAnim = AnimationUtils.loadAnimation(this, R.anim.bottom_animation);
+        FirebaseApp.initializeApp(this);
 
         //Referencia elementos del layout
         imgLogo=findViewById(R.id.imgLogo);

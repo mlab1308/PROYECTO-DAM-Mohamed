@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "388872684081",
+    "firebase_url": "https://autolabibscan-default-rtdb.firebaseio.com",
     "project_id": "autolabibscan",
     "storage_bucket": "autolabibscan.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "388872684081-dvac7rkk16fi4gfnnv9gao9dq3krhlhi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "iesmm.pmdm.autolabibscan",
+            "certificate_hash": "c1fc342f76f0a6afa3faba8ef21a8ae9c9acfe1c"
+          }
+        },
         {
           "client_id": "388872684081-9sgjsvqisrjvrju9uoqb6baa7rdkpf1t.apps.googleusercontent.com",
           "client_type": 3

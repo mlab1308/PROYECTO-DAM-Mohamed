@@ -82,7 +82,7 @@ public class registerActivity extends AppCompatActivity {
                             HashMap<String, Object> map = new HashMap<>();
                             map.put("id", userId);
                             map.put("email", email);
-                            map.put("role", "user"); // Cambia a "admin" si es necesario
+                            map.put("role", "user");
 
                             dataBase.getReference().child("users").child(userId).setValue(map)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {

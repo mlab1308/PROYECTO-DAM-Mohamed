@@ -46,12 +46,7 @@ public class userDashboardActivity extends AppCompatActivity {
         btnSelectImage.setOnClickListener(v -> openImageChooser());
     }
 
-    private void openImageChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Selecciona una imagen"), PICK_IMAGE_REQUEST);
-    }
+
     private void setupBottomNavigation() {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -72,6 +67,12 @@ public class userDashboardActivity extends AppCompatActivity {
             return false;
         });
     }
+    private void openImageChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Selecciona una imagen"), PICK_IMAGE_REQUEST);
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -82,12 +83,12 @@ public class userDashboardActivity extends AppCompatActivity {
                 imageView.setImageBitmap(bitmap);
 
 
-                // Aquí puedes llamar a la función para leer la matrícula
+                //llamada a la función para leer la matrícula
                 OCRProcessor ocrProcessor = new OCRProcessor(this);
                 String recognizedText = ocrProcessor.getTextFromBitmap(bitmap);
                 ocrProcessor.close();
 
-                // Muestra el texto reconocido (puedes mostrarlo en un TextView o en un Toast)
+                // Muestra el texto reconocido
                 Toast.makeText(this, recognizedText, Toast.LENGTH_LONG).show();
                 txtMatriculaleida.setText(recognizedText);
             } catch (IOException e) {
