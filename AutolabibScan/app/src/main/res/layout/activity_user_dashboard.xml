@@ -5,50 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <!-- FrameLayout para contener los fragments -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-        <EditText
-            android:id="@+id/editTextBastidor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Introducir bastidor o matrícula"
-            android:inputType="text" />
-
-        <Button
-            android:id="@+id/btnSelectImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Seleccionar Imagen" />
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:scaleType="centerCrop"
-            android:adjustViewBounds="true" />
-
-        <TextView
-            android:id="@+id/txtMatricula"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Matrícula: "
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
+    <!-- BottomNavigationView para la navegación -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@drawable/rounded_bottom_navigation"
-        app:menu="@menu/bottom_navigation_menu" />
+/>
+
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

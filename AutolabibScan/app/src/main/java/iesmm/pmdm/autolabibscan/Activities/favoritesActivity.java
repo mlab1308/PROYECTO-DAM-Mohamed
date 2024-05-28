@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -41,16 +42,36 @@ public class favoritesActivity extends AppCompatActivity {
     }
 
     private void setupBottomNavigation() {
+        // Obtener el rol del usuario de SharedPreferences
+        SharedPreferences preferences = getSharedPreferences("user_info", MODE_PRIVATE);
+        String userRole = preferences.getString("user_role", "");
+
+        // Cargar el menú correspondiente según el rol
+        if (userRole.equals("admin")) {
+            bottomNavigationView.inflateMenu(R.menu.bottom_navigation_menu_admin);
+        } else  {
+            bottomNavigationView.inflateMenu(R.menu.bottom_navigation_menu);
+        }
+
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
             Intent intent = null;
-            if (id == R.id.navigation_home) {
-                intent = new Intent(this, userDashboardActivity.class);
-            } else if (id == R.id.navigation_favorites) {
-                // Ya estamos en FavoritesActivity, no hacer nada
-                //return true;
-            } else if (id == R.id.navigation_profile) {
-                intent = new Intent(this, profileActivity.class);
+
+
+            if (userRole.equals("admin")) {
+                if (id == R.id.navigation_home) {
+                    intent = new Intent(this, dashboardActivity.class);
+                } else if (id == R.id.navigation_profile) {
+                    intent = new Intent(this, profileActivity.class);
+                } else if (id == R.id.navigation_access_list) {
+                    intent = new Intent(this, accessListActivity.class);
+                }
+            } else  {
+                if (id == R.id.navigation_home) {
+                    intent = new Intent(this, dashboardActivity.class);
+                } else if (id == R.id.navigation_profile) {
+                    intent = new Intent(this, profileActivity.class);
+                }
             }
 
             if (intent != null) {

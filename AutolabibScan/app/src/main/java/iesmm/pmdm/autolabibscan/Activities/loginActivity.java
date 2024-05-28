@@ -1,6 +1,7 @@
 package iesmm.pmdm.autolabibscan.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -152,7 +153,7 @@ public class loginActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user) {
         if (user != null) {
             // Redirige al usuario a la actividad correspondiente
-            startActivity(new Intent(loginActivity.this, userDashboardActivity.class));
+            startActivity(new Intent(loginActivity.this, dashboardActivity.class));
         }
     }
 
@@ -176,10 +177,18 @@ public class loginActivity extends AppCompatActivity {
                                         String role = snapshot.child("role").getValue(String.class);
                                         // Verificar el rol del usuario y redirigir a la actividad correspondiente
                                         if (role != null) {
+                                            // Almacenar el rol y el correo electrónico del usuario en SharedPreferences
+                                            SharedPreferences preferences = getSharedPreferences("user_info", MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = preferences.edit();
+                                            editor.putString("user_role", role);
+                                            editor.putString("user_email", emailUser);
+                                            editor.apply();
                                             if (role.equals("admin")) {
-                                                startActivity(new Intent(loginActivity.this, adminDashboardActivity.class));
+                                                startActivity(new Intent(loginActivity.this, accessListActivity.class));
+                                                finish();
                                             } else if (role.equals("user")) {
-                                                startActivity(new Intent(loginActivity.this, userDashboardActivity.class));
+                                                startActivity(new Intent(loginActivity.this, dashboardActivity.class));
+                                                finish();
                                             } else {
                                                 // Si el rol no está definido correctamente
                                                 Toast.makeText(loginActivity.this, "Rol de usuario no válido.", Toast.LENGTH_SHORT).show();

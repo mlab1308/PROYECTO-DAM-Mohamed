@@ -27,14 +27,15 @@
             android:name=".Activities.favoritesActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.userDashboardActivity"
+            android:name=".Activities.dashboardActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.adminDashboardActivity"
+            android:name=".Activities.accessListActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.registerActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".welcomeActivity"
             android:exported="true">
@@ -48,7 +49,8 @@
             android:name=".Activities.loginActivity"
             android:exported="false"
             android:label="@string/title_activity_login"
-            android:theme="@style/Theme.AutolabibScan" />
+            android:theme="@style/Theme.AutolabibScan"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".Activities.MainActivity"
             android:exported="true">

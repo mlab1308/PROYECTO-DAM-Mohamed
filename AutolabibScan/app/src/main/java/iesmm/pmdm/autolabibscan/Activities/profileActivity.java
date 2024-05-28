@@ -2,6 +2,7 @@ package iesmm.pmdm.autolabibscan.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -41,18 +42,39 @@ public class profileActivity extends AppCompatActivity {
         });
     }
 
-
     private void setupBottomNavigation() {
+        // Obtener el rol del usuario de SharedPreferences
+        SharedPreferences preferences = getSharedPreferences("user_info", MODE_PRIVATE);
+        String userRole = preferences.getString("user_role", "");
+
+        // Cargar el menú correspondiente según el rol
+        if (userRole.equals("admin")) {
+            bottomNavigationView.inflateMenu(R.menu.bottom_navigation_menu_admin);
+        } else{
+            bottomNavigationView.inflateMenu(R.menu.bottom_navigation_menu);
+        }
+
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
             Intent intent = null;
-            if (id == R.id.navigation_home) {
-                intent = new Intent(this, userDashboardActivity.class);
-            } else if (id == R.id.navigation_favorites) {
-                intent = new Intent(this, favoritesActivity.class);
-            } else if (id == R.id.navigation_profile) {
-                // Ya estamos en ProfileActivity, no hacer nada
-                //return true;
+
+
+            if (userRole.equals("admin")) {
+                if (id == R.id.navigation_home) {
+                    intent = new Intent(this, dashboardActivity.class);
+                } else if (id == R.id.navigation_favorites) {
+                    intent = new Intent(this, favoritesActivity.class);
+                } else if (id == R.id.navigation_profile) {
+
+                } else if (id == R.id.navigation_access_list) {
+                    intent = new Intent(this, accessListActivity.class);
+                }
+            } else {
+                if (id == R.id.navigation_home) {
+                    intent = new Intent(this, dashboardActivity.class);
+                } else if (id == R.id.navigation_favorites) {
+                    intent = new Intent(this, favoritesActivity.class);
+                }
             }
 
             if (intent != null) {
@@ -62,4 +84,5 @@ public class profileActivity extends AppCompatActivity {
             return false;
         });
     }
+
 }

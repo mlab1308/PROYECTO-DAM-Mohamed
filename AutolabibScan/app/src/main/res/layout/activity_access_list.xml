@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@drawable/rounded_bottom_navigation"
-        app:menu="@menu/bottom_navigation_menu_admin" />
+/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

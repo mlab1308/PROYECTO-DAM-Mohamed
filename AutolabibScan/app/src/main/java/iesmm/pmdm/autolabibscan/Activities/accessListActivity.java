@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -16,7 +17,7 @@ import iesmm.pmdm.autolabibscan.Adapters.AccessAdapter;
 import iesmm.pmdm.autolabibscan.Models.AccessItem;
 import iesmm.pmdm.autolabibscan.R;
 
-public class adminDashboardActivity extends AppCompatActivity {
+public class accessListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private AccessAdapter adapter;
     private List<AccessItem> accessItemList;
@@ -25,7 +26,7 @@ public class adminDashboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_dashboard);
+        setContentView(R.layout.activity_access_list);
 
         recyclerView = findViewById(R.id.accessList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -44,16 +45,40 @@ public class adminDashboardActivity extends AppCompatActivity {
 
 
     private void setupBottomNavigation() {
+        // Obtener el rol del usuario de SharedPreferences
+        SharedPreferences preferences = getSharedPreferences("user_info", MODE_PRIVATE);
+        String userRole = preferences.getString("user_role", "");
+
+        // Cargar el menú correspondiente según el rol
+        if (userRole.equals("admin")) {
+            bottomNavigationView.inflateMenu(R.menu.bottom_navigation_menu_admin);
+        } else  {
+            bottomNavigationView.inflateMenu(R.menu.bottom_navigation_menu);
+        }
+
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
             Intent intent = null;
-            if (id == R.id.navigation_home) {
-                // Ya estamos en home, no hacer nada
-                //return true;
-            } else if (id == R.id.navigation_search) {
-                intent = new Intent(this, userDashboardActivity.class);
-            } else if (id == R.id.navigation_profile) {
-                intent = new Intent(this, profileActivity.class);
+
+
+            if (userRole.equals("admin")) {
+                if (id == R.id.navigation_home) {
+                    intent = new Intent(this, dashboardActivity.class);
+                } else if (id == R.id.navigation_favorites) {
+                    intent = new Intent(this, favoritesActivity.class);
+                } else if (id == R.id.navigation_profile) {
+                    intent = new Intent(this, profileActivity.class);
+                } else if (id == R.id.navigation_access_list) {
+
+                }
+            } else  {
+                if (id == R.id.navigation_home) {
+                    intent = new Intent(this, dashboardActivity.class);
+                } else if (id == R.id.navigation_favorites) {
+                    intent = new Intent(this, favoritesActivity.class);
+                } else if (id == R.id.navigation_profile) {
+                    intent = new Intent(this, profileActivity.class);
+                }
             }
 
             if (intent != null) {
@@ -63,4 +88,5 @@ public class adminDashboardActivity extends AppCompatActivity {
             return false;
         });
     }
+
 }
