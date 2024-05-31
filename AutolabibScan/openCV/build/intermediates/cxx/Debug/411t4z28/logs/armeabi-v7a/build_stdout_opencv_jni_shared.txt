@@ -1,0 +1,2 @@
+ninja: Entering directory `C:\Users\simol\OneDrive\Escritorio\AutoLabibRepo\AutolabibScan\opencv\.cxx\Debug\411t4z28\armeabi-v7a'
+ninja: no work to do.
