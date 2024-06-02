@@ -1,31 +1,21 @@
 package iesmm.pmdm.autolabibscan.Activities;
 
-import androidx.annotation.Nullable;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.io.IOException;
 
 import iesmm.pmdm.autolabibscan.Fragments.AccessListFragment;
 import iesmm.pmdm.autolabibscan.Fragments.DashboardFragment;
 import iesmm.pmdm.autolabibscan.Fragments.FavoritesFragment;
 import iesmm.pmdm.autolabibscan.Fragments.ProfileFragment;
 import iesmm.pmdm.autolabibscan.R;
-import iesmm.pmdm.autolabibscan.Utils.OCRProcessor;
-import iesmm.pmdm.autolabibscan.Utils.TessDataManager;
 
 public class dashboardActivity extends AppCompatActivity {
 
@@ -40,11 +30,19 @@ public class dashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_dashboard);
         //Referencia elementos del layout
-        bottomNavigationView =  findViewById(R.id.bottom_navigation);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+
 
         setupBottomNavigation();
 
+        // Cargar DashboardFragment por defecto
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new DashboardFragment())
+                .commit();
+
+
     }
+
     // Configura el BottomNavigationView
     private void setupBottomNavigation() {
         // Obtener el rol del usuario de SharedPreferences

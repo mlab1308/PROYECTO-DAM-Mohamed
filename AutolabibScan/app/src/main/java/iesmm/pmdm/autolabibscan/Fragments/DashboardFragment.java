@@ -5,43 +5,52 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.opencv.android.OpenCVLoader;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.Rect;
-import org.opencv.core.Size;
-import org.opencv.imgproc.Imgproc;
-import org.opencv.android.Utils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
+import iesmm.pmdm.autolabibscan.Models.ApiResponse;
 import iesmm.pmdm.autolabibscan.R;
-import iesmm.pmdm.autolabibscan.Utils.OCRProcessor;
-import iesmm.pmdm.autolabibscan.Utils.TessDataManager;
+import iesmm.pmdm.autolabibscan.Remote.ApiClient;
+import iesmm.pmdm.autolabibscan.Remote.ApiService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class DashboardFragment extends Fragment {
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private ImageView imageView;
-    private ImageView imageViewProcessed;
     private Uri imageUri;
     private TextView txtMatriculaleida;
+    private TextInputLayout textInputLayout;
+    private TextInputEditText editTextBastidor;
+    private ProgressBar progressBar;
 
     static {
         if (!OpenCVLoader.initDebug()) {
@@ -55,15 +64,29 @@ public class DashboardFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         // Referencia elementos del layout
-        Button btnSelectImage = view.findViewById(R.id.btnSelectImage);
+        textInputLayout = view.findViewById(R.id.textInputLayout);
+        editTextBastidor = view.findViewById(R.id.editTextBastidor);
         imageView = view.findViewById(R.id.imageView);
-        imageViewProcessed = view.findViewById(R.id.imageViewProcessed);
         txtMatriculaleida = view.findViewById(R.id.txtMatricula);
+        progressBar = view.findViewById(R.id.progressBar);
 
-        // Copia los datos de Tesseract al directorio de archivos de la aplicación
-        TessDataManager.initTessData(getContext());
+        // Acción al pulsar el icono de subir imagen
+        textInputLayout.setEndIconOnClickListener(v -> openImageChooser());
 
-        btnSelectImage.setOnClickListener(v -> openImageChooser());
+        // Configurar el OnEditorActionListener para detectar la tecla "Enter"
+        editTextBastidor.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE ||
+                        (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
+                    // Aquí manejas el evento cuando se presiona "Enter"
+                    String matricula = editTextBastidor.getText().toString();
+                    handleMatriculaInput(matricula);
+                    return true;
+                }
+                return false;
+            }
+        });
 
         return view;
     }
@@ -83,84 +106,103 @@ public class DashboardFragment extends Fragment {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
                 imageView.setImageBitmap(bitmap);
-
-                // Convertir Bitmap a Mat
-                Mat src = new Mat();
-                Utils.bitmapToMat(bitmap, src);
-
-                // Preprocesar la imagen
-                Mat processedImage = preProcessImage(src);
-
-                // Extraer la región de la matrícula
-                Mat licensePlate = extractLicensePlate(processedImage);
-
-                // Convertir Mat a Bitmap
-                Bitmap processedBitmap = Bitmap.createBitmap(licensePlate.cols(), licensePlate.rows(), Bitmap.Config.ARGB_8888);
-                Utils.matToBitmap(licensePlate, processedBitmap);
-
-                // Mostrar la imagen procesada
-                imageViewProcessed.setImageBitmap(processedBitmap);
-
-                // Realizar OCR en la imagen procesada
-                OCRProcessor ocrProcessor = new OCRProcessor(getContext());
-                String text = ocrProcessor.getOCRResult(processedBitmap);
-
-                txtMatriculaleida.setText("Matricula leida: "+text);
+                uploadImageToApi(bitmap);
 
             } catch (IOException e) {
                 e.printStackTrace();
-                Toast.makeText(getContext(), "Error al cargar la imagen", Toast.LENGTH_SHORT).show();
+                Snackbar.make(getView(), "Error al cargar la imagen", Snackbar.LENGTH_LONG).show();
             }
         }
     }
 
-    public Mat preProcessImage(Mat src) {
-        Mat gray = new Mat();
-        Mat blur = new Mat();
-        Mat edged = new Mat();
+    private void uploadImageToApi(Bitmap bitmap) {
+        // Mostrar ProgressBar
+        progressBar.setVisibility(View.VISIBLE);
 
-        // Convertir a escala de grises
-        Imgproc.cvtColor(src, gray, Imgproc.COLOR_BGR2GRAY);
+        // Convertir bitmap a archivo
+        File file = new File(getContext().getCacheDir(), "image.jpg");
+        try {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            byte[] bitmapData = bos.toByteArray();
 
-        // Aplicar filtro bilateral para reducir el ruido
-        Imgproc.bilateralFilter(gray, blur, 11, 17, 17);
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(bitmapData);
+            fos.flush();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
 
-        // Detectar bordes
-        Imgproc.Canny(blur, edged, 30, 200);
+        // Preparar la llamada a la API
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpeg"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
-        return edged;
-    }
+        Call<ApiResponse> call = apiService.uploadImage(body);
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                // Ocultar ProgressBar
+                progressBar.setVisibility(View.GONE);
 
-    private Mat extractLicensePlate(Mat src) {
-        Mat contoursImage = src.clone();
-        List<MatOfPoint> contours = new ArrayList<>();
-        Mat hierarchy = new Mat();
-
-        // Encontrar contornos
-        Imgproc.findContours(src, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
-
-        Rect largestRect = null;
-
-        // Iterar a través de los contornos y encontrar uno que coincida con el tamaño de una matrícula
-        for (MatOfPoint contour : contours) {
-            Rect rect = Imgproc.boundingRect(contour);
-            if (isLicensePlateShape(rect)) {
-                if (largestRect == null || rect.area() > largestRect.area()) {
-                    largestRect = rect;
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse apiResponse = response.body();
+                    if (apiResponse.getError() == null) {
+                        handleMatriculaInput(apiResponse.getPlate());
+                    } else {
+                        Snackbar.make(getView(), "Error: " + apiResponse.getError(), Snackbar.LENGTH_LONG).show();
+                    }
+                } else {
+                    Snackbar.make(getView(), "Error al procesar la imagen", Snackbar.LENGTH_LONG).show();
                 }
             }
-        }
 
-        if (largestRect != null) {
-            return new Mat(contoursImage, largestRect);
-        }
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                // Ocultar ProgressBar
+                progressBar.setVisibility(View.GONE);
 
-        return contoursImage;
+                Snackbar.make(getView(), "Error: " + t.getMessage(), Snackbar.LENGTH_LONG).show();
+            }
+        });
     }
 
-    private boolean isLicensePlateShape(Rect rect) {
-        // Define los criterios para identificar la forma de una matrícula
-        float aspectRatio = (float) rect.width / rect.height;
-        return aspectRatio > 2 && aspectRatio < 6 && rect.height > 20 && rect.width > 60;
+    private void handleMatriculaInput(String matricula) {
+        // Realiza la consulta a la base de datos con la matrícula
+        txtMatriculaleida.setText("Matrícula leída: " + matricula);
+        Toast.makeText(getActivity(), "Matrícula procesada: " + matricula, Toast.LENGTH_SHORT).show();
+
+        consultaDB(matricula);
+    }
+
+    private void consultaDB(String matricula) {
+
+        // Simulación de datos obtenidos de la base de datos
+        String carBrand = "Volkswagen";
+        String ownersText = "3 Owners";
+        String powerText = "150 CV";
+        String fuelText = "Diesel";
+        String vehicleInfo = "Vehicle Number\nOwner Name\nRegistering authority\nVehicle Class\nFuel Type\nEmission Norm\nVehicle Age\nVehicle Status";
+
+        // Crear el Bundle con los datos del vehículo
+        Bundle bundle = new Bundle();
+        bundle.putString("carBrand", carBrand);
+        bundle.putString("plateText", matricula.toUpperCase());
+        bundle.putString("ownersText", ownersText);
+        bundle.putString("powerText", powerText);
+        bundle.putString("fuelText", fuelText);
+        bundle.putString("vehicleInfo", vehicleInfo);
+
+        // Crear el ResultFragment y pasarle los datos
+        ResultFragment resultFragment = new ResultFragment();
+        resultFragment.setArguments(bundle);
+
+        // Navegar al ResultFragment
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, resultFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
