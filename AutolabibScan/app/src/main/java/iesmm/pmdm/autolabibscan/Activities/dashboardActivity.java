@@ -1,64 +1,97 @@
 package iesmm.pmdm.autolabibscan.Activities;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
-import java.io.IOException;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import iesmm.pmdm.autolabibscan.Fragments.AccessListFragment;
 import iesmm.pmdm.autolabibscan.Fragments.DashboardFragment;
 import iesmm.pmdm.autolabibscan.Fragments.FavoritesFragment;
 import iesmm.pmdm.autolabibscan.Fragments.ProfileFragment;
 import iesmm.pmdm.autolabibscan.R;
-import iesmm.pmdm.autolabibscan.Utils.OCRProcessor;
-import iesmm.pmdm.autolabibscan.Utils.TessDataManager;
 
 public class dashboardActivity extends AppCompatActivity {
 
-    private static final int PICK_IMAGE_REQUEST = 1;
-    private ImageView imageView;
-    private Uri imageUri;
-    private TextView txtMatriculaleida;
     private BottomNavigationView bottomNavigationView;
+
+    private FirebaseAuth mAuth;
+    private DatabaseReference userRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_dashboard);
-        // Copia los datos de Tesseract al directorio de archivos de la aplicación
-        TessDataManager.copyTessDataFiles(this);
-        //Referencia elementos del layout
-        /*Button btnSelectImage = findViewById(R.id.btnSelectImage);
-        imageView = findViewById(R.id.imageView);
-        txtMatriculaleida=findViewById(R.id.txtMatricula);*/
-        bottomNavigationView =  findViewById(R.id.bottom_navigation);
 
-        setupBottomNavigation();
+        // Inicialización de FirebaseAuth
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        //btnSelectImage.setOnClickListener(v -> openImageChooser());
+        // Referencia elementos del layout
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        if (currentUser != null) {
+            // Obtener la referencia del usuario en la base de datos
+            userRef = FirebaseDatabase.getInstance().getReference().child("users").child(currentUser.getUid());
+            fetchUserRoleAndSetupBottomNavigation();
+        } else {
+            // Manejar el caso donde currentUser es null
+            Toast.makeText(this, "Usuario no autenticado", Toast.LENGTH_SHORT).show();
+        }
+
+        // Cargar DashboardFragment por defecto
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new DashboardFragment())
+                .commit();
     }
-    // Configura el BottomNavigationView
-    private void setupBottomNavigation() {
-        // Obtener el rol del usuario de SharedPreferences
-        SharedPreferences preferences = getSharedPreferences("user_info", MODE_PRIVATE);
-        String userRole = preferences.getString("user_role", "");
+    /**
+     * Método para obtener el rol del usuario desde Firebase y configurar la navegación inferior.
+     */
+    private void fetchUserRoleAndSetupBottomNavigation() {
+        // Añade un listener de evento único para obtener los datos del usuario desde Firebase Realtime Database
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Verifica si los datos del usuario existen en la base de datos
+                if (snapshot.exists()) {
+                    // Obtiene el valor del rol del usuario desde el snapshot
+                    String userRole = snapshot.child("role").getValue(String.class);
 
+                    // Configura el BottomNavigationView basado en el rol del usuario
+                    setupBottomNavigation(userRole);
+                } else {
+                    // Maneja el caso donde los datos del usuario no existen en la base de datos
+                    Toast.makeText(dashboardActivity.this, "Rol de usuario no encontrado", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Maneja los errores en caso de que la consulta a la base de datos falle
+                Toast.makeText(dashboardActivity.this, "Error al obtener el rol del usuario", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    // Configura el BottomNavigationView
+    private void setupBottomNavigation(String userRole) {
         // Cargar el menú correspondiente según el rol
-        if (userRole.equals("admin")) {
+        if ("admin".equals(userRole)) {
             bottomNavigationView.inflateMenu(R.menu.bottom_navigation_menu_admin);
         } else {
             bottomNavigationView.inflateMenu(R.menu.bottom_navigation_menu);
@@ -75,8 +108,6 @@ public class dashboardActivity extends AppCompatActivity {
                 fragment = new ProfileFragment();
             } else if (item.getItemId() == R.id.navigation_access_list) {
                 fragment = new AccessListFragment();
-            } else {
-
             }
 
             if (fragment != null) {
@@ -88,37 +119,5 @@ public class dashboardActivity extends AppCompatActivity {
 
             return false;
         });
-    }
-
-
-    private void openImageChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Selecciona una imagen"), PICK_IMAGE_REQUEST);
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            imageUri = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-                imageView.setImageBitmap(bitmap);
-
-
-                //llamada a la función para leer la matrícula
-                OCRProcessor ocrProcessor = new OCRProcessor(this);
-                String recognizedText = ocrProcessor.getTextFromBitmap(bitmap);
-                ocrProcessor.close();
-
-                // Muestra el texto reconocido
-                Toast.makeText(this, recognizedText, Toast.LENGTH_LONG).show();
-                txtMatriculaleida.setText(recognizedText);
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Error al cargar la imagen", Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 }
