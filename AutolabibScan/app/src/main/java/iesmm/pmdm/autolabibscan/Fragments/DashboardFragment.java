@@ -24,7 +24,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import org.opencv.android.OpenCVLoader;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -52,11 +51,6 @@ public class DashboardFragment extends Fragment {
     private TextInputEditText editTextBastidor;
     private ProgressBar progressBar;
 
-    static {
-        if (!OpenCVLoader.initDebug()) {
-            // Handle initialization error
-        }
-    }
 
     @Nullable
     @Override
