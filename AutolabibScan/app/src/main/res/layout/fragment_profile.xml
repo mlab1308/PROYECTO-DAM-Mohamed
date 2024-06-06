@@ -1,61 +1,99 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.ProfileFragment">
+    android:fillViewport="true"
+    android:background="@drawable/login_background"
+    android:layout_marginBottom="80dp"> <!-- Añadir margen inferior al ScrollView -->
 
-    <ImageView
-        android:id="@+id/imgProfile"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/ic_profile" />
-
-    <TextView
-        android:id="@+id/txtProfileName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/imgProfile"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="Nombre del Usuario"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/txtProfileEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtProfileName"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:text="usuario@correo.com"
-        android:textSize="16sp" />
-
-    <Button
-        android:id="@+id/btnEditProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtProfileEmail"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="Editar Perfil" />
-
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btnEditProfile"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="Cerrar Sesión" />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_navigation_menu" />
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_marginTop="0dp">
 
-</RelativeLayout>
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Volver"
+            app:srcCompat="@drawable/ic_back_blanco"
+            android:layout_marginBottom="16dp"/>
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="70dp"
+            app:srcCompat="@drawable/profile" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lion Fischer"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="lionfischer@gmail.com"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonEdit"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/btn_background_1"
+            android:drawableStart="@drawable/ic_editprofile"
+            android:drawablePadding="20dp"
+            android:paddingStart="20dp"
+            android:text="Editar datos"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            style="@android:style/Widget.Button"
+            android:textAlignment="viewStart" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonFavorites"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/btn_background_1"
+            android:drawableStart="@drawable/ic_favorites"
+            android:drawablePadding="20dp"
+            android:paddingStart="20dp"
+            android:text="Mis favoritos"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            style="@android:style/Widget.Button"
+            android:textAlignment="viewStart" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonLogout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/btn_background_1"
+            android:drawableStart="@drawable/ic_logout"
+            android:drawablePadding="20dp"
+            android:paddingStart="20dp"
+            android:text="Cerrar Sesión"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            style="@android:style/Widget.Button"
+            android:textAlignment="viewStart" />
+    </LinearLayout>
+</ScrollView>
