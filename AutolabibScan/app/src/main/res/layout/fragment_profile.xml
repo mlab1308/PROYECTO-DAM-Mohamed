@@ -14,14 +14,6 @@
         android:padding="16dp"
         android:layout_marginTop="0dp">
 
-        <ImageButton
-            android:id="@+id/backButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Volver"
-            app:srcCompat="@drawable/ic_back_blanco"
-            android:layout_marginBottom="16dp"/>
 
         <ImageView
             android:id="@+id/imageView2"

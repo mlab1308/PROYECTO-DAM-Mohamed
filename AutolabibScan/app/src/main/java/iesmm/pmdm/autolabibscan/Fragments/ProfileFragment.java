@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import iesmm.pmdm.autolabibscan.Activities.loginActivity;
 import iesmm.pmdm.autolabibscan.Models.User;
 import iesmm.pmdm.autolabibscan.R;
@@ -29,7 +30,7 @@ public class ProfileFragment extends Fragment {
 
     private ImageView profileImage;
     private TextView profileName, profileEmail;
-    private ImageButton backButton;
+
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private DatabaseReference userRef;
@@ -43,7 +44,6 @@ public class ProfileFragment extends Fragment {
         profileImage = view.findViewById(R.id.imageView2);
         profileName = view.findViewById(R.id.textView);
         profileEmail = view.findViewById(R.id.textView2);
-        backButton = view.findViewById(R.id.backButton);
 
         // Inicializar Firebase Auth y Database
         mAuth = FirebaseAuth.getInstance();
@@ -55,13 +55,11 @@ public class ProfileFragment extends Fragment {
             loadUserData();
         }
 
-        // Manejar el botón de retroceso
-        backButton.setOnClickListener(v -> getFragmentManager().popBackStack());
-
         // Manejar el botón de editar perfil
         view.findViewById(R.id.buttonEdit).setOnClickListener(v -> {
             Fragment editProfileFragment = new EditProfileFragment();
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
             transaction.replace(R.id.fragment_container, editProfileFragment);
             transaction.addToBackStack(null);
             transaction.commit();
@@ -71,6 +69,7 @@ public class ProfileFragment extends Fragment {
         view.findViewById(R.id.buttonFavorites).setOnClickListener(v -> {
             Fragment favoritesFragment = new FavoritesFragment();
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
             transaction.replace(R.id.fragment_container, favoritesFragment);
             transaction.addToBackStack(null);
             transaction.commit();
