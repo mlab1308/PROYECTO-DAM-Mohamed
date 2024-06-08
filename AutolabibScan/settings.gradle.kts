@@ -16,4 +16,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "AutolabibScan"
-include(":app", ":opencv")
+include(":app")

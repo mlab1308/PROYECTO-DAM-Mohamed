@@ -1,15 +1,75 @@
 <resources>
     <string name="app_name">AutolabibScan</string>
-    <string name="title_activity_login">loginActivity</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
     <string name="default_web_client">388872684081-9sgjsvqisrjvrju9uoqb6baa7rdkpf1t.apps.googleusercontent.com</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Activity titles -->
+    <string name="title_activity_login">Iniciar Sesión</string>
+    <string name="title_activity_register">Registrarse</string>
+    <string name="title_activity_dashboard">Tablero</string>
+    <string name="title_activity_welcome">Bienvenido</string>
+
+    <!-- Login activity -->
+    <string name="app_logo">Logo de la Aplicación</string>
+    <string name="app_author">por Mohamed</string>
+    <string name="email_hint">Correo electrónico</string>
+    <string name="password_hint">Contraseña</string>
+    <string name="forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="login">Iniciar Sesión</string>
+    <string name="register_redirect">¿No tienes una cuenta? Regístrate</string>
+    <string name="or_continue_with">O continúa con</string>
+    <string name="google_login">Iniciar sesión con Google</string>
+    <string name="facebook_login">Iniciar sesión con Facebook</string>
+    <string name="twitter_login">Iniciar sesión con Twitter</string>
+
+    <!-- Register activity -->
+    <string name="first_name_hint">Nombre</string>
+    <string name="last_name_hint">Apellido</string>
+    <string name="confirm_password_hint">Confirmar Contraseña</string>
+    <string name="register">Registrarse</string>
+    <string name="login_redirect">¿Ya tienes una cuenta? Inicia sesión</string>
+
+    <!-- Toast messages -->
+    <string name="register_success">Registro exitoso</string>
+    <string name="register_db_error">Error al registrar en la base de datos. Inténtelo de nuevo.</string>
+    <string name="register_error">Error al registrar. Inténtelo de nuevo.</string>
+    <string name="login_fields_empty">Por favor, ingrese correo electrónico y contraseña.</string>
+    <string name="google_signin_failed">Error al iniciar sesión con Google</string>
+    <string name="authentication_failed">Autenticación fallida.</string>
+    <string name="login_failed">No se pudo iniciar sesión. Verifique sus credenciales e inténtelo de nuevo.</string>
+    <string name="login_error">Se produjo un error al iniciar sesión. Por favor, inténtelo de nuevo más tarde.</string>
+
+    <!-- Access List Activity -->
+    <string name="access_list_title">Lista de Accesos</string>
+
+    <!-- Dashboard Fragment -->
+    <string name="welcome">Welcome</string>
+    <string name="select_image">Select Image</string>
+    <string name="search_cars_hint">Search Cars...</string>
+    <string name="license_plate">License Plate:</string>
+
+    <!-- Edit Profile Fragment -->
+    <string name="back">Back</string>
+    <string name="profile_image">Profile Image</string>
+    <string name="edit_image">Edit Image</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="save_changes">Save Changes</string>
+
+    <!-- Favorites Fragment -->
+    <string name="favorites_list">Lista de Favoritos</string>
+
+    <!-- Profile fragment -->
+    <string name="profile_name">Nombre</string>
+    <string name="profile_email">correo@gmail.com</string>
+    <string name="edit_profile">Editar Perfil</string>
+    <string name="my_favorites">Mis Favoritos</string>
+    <string name="logout">Cerrar Sesión</string>
+
+    <!-- Access item -->
+    <string name="user_icon">Icono de usuario</string>
+    <string name="access">Acceso</string>
+    <string name="access_details">Usuario: example@gmail.com\n24/04/2024 15:31</string>
+
+    <!-- Plate item -->
+    <string name="plate_title">Matrícula</string>
+    <string name="plate_icon">Icono de matrícula</string>
 </resources>

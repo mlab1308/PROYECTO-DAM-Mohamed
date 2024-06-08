@@ -89,18 +89,18 @@ public class registerActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                Toast.makeText(registerActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(registerActivity.this, getString(R.string.register_success), Toast.LENGTH_SHORT).show();
                                                 // Redirección a la actividad de inicio de sesión después del registro exitoso
                                                 startActivity(new Intent(registerActivity.this, loginActivity.class));
                                                 finish(); // Finaliza esta actividad para evitar que el usuario pueda volver atrás al registro
                                             } else {
-                                                Toast.makeText(registerActivity.this, "Error al registrar en la base de datos. Inténtelo de nuevo.", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(registerActivity.this, getString(R.string.register_db_error), Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
                         } else {
                             // Registro fallido
-                            Toast.makeText(registerActivity.this, "Error al registrar. Inténtelo de nuevo.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(registerActivity.this, getString(R.string.register_error), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

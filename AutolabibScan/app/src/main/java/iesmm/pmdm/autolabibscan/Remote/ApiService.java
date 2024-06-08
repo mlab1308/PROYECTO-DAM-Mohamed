@@ -10,6 +10,6 @@ import retrofit2.http.Part;
 
 public interface ApiService {
     @Multipart
-    @POST("/detect_plate/")
+    @POST("/reconocer_matricula/")
     Call<ApiResponse> uploadImage(@Part MultipartBody.Part file);
 }

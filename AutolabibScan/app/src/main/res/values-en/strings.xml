@@ -1,0 +1,78 @@
+<resources>
+    <string name="app_name">AutolabibScan</string>
+    <string name="default_web_client">388872684081-9sgjsvqisrjvrju9uoqb6baa7rdkpf1t.apps.googleusercontent.com</string>
+
+    <!-- Activity titles -->
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_register">Register</string>
+    <string name="title_activity_dashboard">Dashboard</string>
+    <string name="title_activity_welcome">Welcome</string>
+
+    <!-- Login activity -->
+    <string name="app_logo">App Logo</string>
+    <string name="app_author">by Mohamed</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="forgot_password">Forgot?</string>
+    <string name="login">Log In</string>
+    <string name="register_redirect">Don\'t have an account? Sign up</string>
+    <string name="or_continue_with">Or continue with</string>
+    <string name="google_login">Google Login</string>
+    <string name="facebook_login">Facebook Login</string>
+    <string name="twitter_login">Twitter Login</string>
+
+    <!-- Register activity -->
+    <string name="first_name_hint">First Name</string>
+    <string name="last_name_hint">Last Name</string>
+    <string name="confirm_password_hint">Confirm Password</string>
+    <string name="register">Register</string>
+    <string name="login_redirect">Already have an account? Login</string>
+
+    <!-- Toast messages -->
+    <string name="register_success">Successful registration</string>
+    <string name="register_db_error">Error registering in the database. Please try again.</string>
+    <string name="register_error">Registration failed. Please try again.</string>
+    <string name="login_fields_empty">Please enter email and password.</string>
+    <string name="google_signin_failed">Google sign in failed</string>
+    <string name="authentication_failed">Authentication Failed.</string>
+    <string name="login_failed">Login failed. Check your credentials and try again.</string>
+    <string name="login_error">An error occurred while logging in. Please try again later.</string>
+
+
+    <!-- Access List Activity -->
+    <string name="access_list_title">Access List</string>
+
+
+    <!-- Dashboard Fragment -->
+    <string name="welcome">Bienvenido/a</string>
+    <string name="select_image">Seleccionar Imagen</string>
+    <string name="search_cars_hint">Buscar Coches...</string>
+    <string name="license_plate">Matrícula:</string>
+
+    <!-- Edit Profile Fragment -->
+    <string name="back">Volver</string>
+    <string name="profile_image">Imagen de perfil</string>
+    <string name="edit_image">Editar imagen</string>
+    <string name="name">Nombre</string>
+    <string name="email">Correo electrónico</string>
+    <string name="save_changes">Guardar cambios</string>
+
+    <!-- Favorites Fragment -->
+    <string name="favorites_list">Favorites List</string>
+
+    <!-- Profile fragment -->
+    <string name="profile_name">Nombre</string>
+    <string name="profile_email">correo@gmail.com</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="my_favorites">My Favorites</string>
+    <string name="logout">Logout</string>
+
+    <!-- Access item -->
+    <string name="user_icon">User icon</string>
+    <string name="access">Access</string>
+    <string name="access_details">User: example@gmail.com\n24/04/2024 15:31</string>
+
+    <!-- Plate item -->
+    <string name="plate_title">Plate</string>
+    <string name="plate_icon">Plate icon</string>
+</resources>

@@ -2,6 +2,7 @@ package iesmm.pmdm.autolabibscan.Activities;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,7 +51,7 @@ public class dashboardActivity extends AppCompatActivity {
             fetchUserRoleAndSetupBottomNavigation();
         } else {
             // Manejar el caso donde currentUser es null
-            Toast.makeText(this, "Usuario no autenticado", Toast.LENGTH_SHORT).show();
+            Log.e("dashboardActivity", "Rol de usuario no autenticado");
         }
 
         // Cargar DashboardFragment por defecto
@@ -75,14 +76,14 @@ public class dashboardActivity extends AppCompatActivity {
                     setupBottomNavigation(userRole);
                 } else {
                     // Maneja el caso donde los datos del usuario no existen en la base de datos
-                    Toast.makeText(dashboardActivity.this, "Rol de usuario no encontrado", Toast.LENGTH_SHORT).show();
+                    Log.e("dashboardActivity", "Rol de usuario no encontrado");
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // Maneja los errores en caso de que la consulta a la base de datos falle
-                Toast.makeText(dashboardActivity.this, "Error al obtener el rol del usuario", Toast.LENGTH_SHORT).show();
+                Log.e("dashboardActivity", "Error al obtener el rol del usuario");
             }
         });
     }
