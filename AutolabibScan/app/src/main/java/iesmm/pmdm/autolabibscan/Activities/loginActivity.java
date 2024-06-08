@@ -233,7 +233,7 @@ public class loginActivity extends AppCompatActivity {
                     }
                 } else {
                     // Si el usuario no existe en la base de datos, crear una entrada para el usuario
-                    userRef.setValue(new User(emailUser, "user"));
+                    userRef.setValue(new User("",emailUser,"user"));
                     redirectToDashboard(userId);
                 }
             }

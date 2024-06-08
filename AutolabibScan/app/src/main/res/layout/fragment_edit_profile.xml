@@ -7,75 +7,97 @@
     android:background="@drawable/login_background"
     android:layout_marginBottom="80dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="wrap_content">
 
-        <ImageButton
-            android:id="@+id/backButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Volver"
-            app:srcCompat="@drawable/ic_back_blanco"
-            android:layout_marginBottom="16dp"
-            android:layout_gravity="start"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <ImageView
-            android:id="@+id/profileImageView"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="70dp"
-            app:srcCompat="@drawable/profile"
-            android:contentDescription="Imagen de perfil"/>
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Volver"
+                app:srcCompat="@drawable/ic_back_blanco"
+                android:layout_marginBottom="16dp"
+                android:layout_gravity="start"/>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonChangeImage"
+            <FrameLayout
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="70dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profileImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_profile_default"
+                    android:contentDescription="Imagen de perfil"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/circle_shape_overlay"
+                    />
+
+                <ImageView
+                    android:id="@+id/iconEditImage"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="Editar imagen"
+                    app:srcCompat="@drawable/ic_edit"
+                    app:tint="@android:color/white"/>
+            </FrameLayout>
+
+            <EditText
+                android:id="@+id/editTextName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre"
+                android:layout_marginBottom="16dp"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:background="@drawable/edittext_background"/>
+
+            <EditText
+                android:id="@+id/editTextEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Correo electrónico"
+                android:layout_marginBottom="16dp"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:background="@drawable/edittext_background"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonSave"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/btn_background_1"
+                android:drawablePadding="20dp"
+                android:paddingStart="20dp"
+                android:text="Guardar cambios"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                style="@android:style/Widget.Button"
+                android:textAlignment="viewStart"/>
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="16dp"
-            android:text="Cambiar imagen"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            style="@android:style/Widget.Button"/>
-
-        <EditText
-            android:id="@+id/editTextName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Nombre"
-            android:layout_marginBottom="16dp"
-            android:padding="10dp"
-            android:textSize="18sp"
-            android:background="@drawable/edittext_background"/>
-
-        <EditText
-            android:id="@+id/editTextEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Correo electrónico"
-            android:layout_marginBottom="16dp"
-            android:padding="10dp"
-            android:textSize="18sp"
-            android:background="@drawable/edittext_background"/>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonSave"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/btn_background_1"
-            android:drawablePadding="20dp"
-            android:paddingStart="20dp"
-            android:text="Guardar cambios"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            style="@android:style/Widget.Button"
-            android:textAlignment="viewStart"/>
-    </LinearLayout>
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
+    </RelativeLayout>
 </ScrollView>

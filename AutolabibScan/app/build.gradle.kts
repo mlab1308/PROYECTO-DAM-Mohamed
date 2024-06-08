@@ -87,7 +87,9 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:21.0.0")
     implementation("com.github.rmtheis:tess-two:9.1.0")
     implementation ("com.google.android.material:material:1.11.0-alpha01")
-
+    implementation ("com.google.firebase:firebase-storage")
+    implementation ("com.github.bumptech.glide:glide:4.13.0")
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
     //Conexion a la api de imagenes
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")

@@ -2,6 +2,7 @@ package iesmm.pmdm.autolabibscan.Fragments;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -11,12 +12,15 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +28,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
 
@@ -35,11 +41,14 @@ public class EditProfileFragment extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 1;
     private ImageView profileImageView;
     private EditText editTextName, editTextEmail;
+    private ImageButton backButton;
+    private ProgressBar progressBar;
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private DatabaseReference userRef;
     private FirebaseUser currentUser;
     private Uri imageUri;
+    private StorageReference storageRef;
 
     @Nullable
     @Override
@@ -49,11 +58,12 @@ public class EditProfileFragment extends Fragment {
         profileImageView = view.findViewById(R.id.profileImageView);
         editTextName = view.findViewById(R.id.editTextName);
         editTextEmail = view.findViewById(R.id.editTextEmail);
-        ImageButton backButton = view.findViewById(R.id.backButton);
+        backButton = view.findViewById(R.id.backButton);
+        progressBar = view.findViewById(R.id.progressBar);
 
-        // Inicializar Firebase Auth y Database
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
+        storageRef = FirebaseStorage.getInstance().getReference();
         currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
@@ -61,35 +71,61 @@ public class EditProfileFragment extends Fragment {
             loadUserData();
         }
 
-        // Manejar el botón de retroceso
-        backButton.setOnClickListener(v -> getFragmentManager().popBackStack());
+        backButton.setOnClickListener(v -> {
+            if (getFragmentManager() != null) {
+                getFragmentManager().popBackStack();
+            }
+        });
 
-        // Manejar el botón de cambiar imagen
-        view.findViewById(R.id.buttonChangeImage).setOnClickListener(v -> openImageChooser());
-
-        // Manejar el botón de guardar cambios
+        profileImageView.setOnClickListener(v -> openImageChooser());
         view.findViewById(R.id.buttonSave).setOnClickListener(v -> saveUserData());
 
         return view;
     }
-
+    // Método para cargar los datos del usuario desde la base de datos
     private void loadUserData() {
+        // Mostrar el progreso y ocultar el contenido del perfil mientras se cargan los datos
+        progressBar.setVisibility(View.VISIBLE);
+
+
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Si los datos existen en la base de datos
                 if (snapshot.exists()) {
                     User user = snapshot.getValue(User.class);
                     if (user != null) {
+                        // Configurar los valores de las vistas con los datos del usuario
                         editTextName.setText(user.getName());
                         editTextEmail.setText(user.getEmail());
-                       //falta cargar la imagen
+                        // Cargar la imagen de perfil si existe, de lo contrario, cargar una imagen por defecto
+                        if (user.getProfileImageUrl() != null && !user.getProfileImageUrl().isEmpty()) {
+                            // Verificar que el fragmento esté adjunto a una actividad antes de usar Glide
+                            if (getActivity() != null) {
+                                Glide.with(getContext())
+                                        .load(user.getProfileImageUrl())
+                                        .transform(new CircleCrop())
+                                        .into(profileImageView);
+                            }
+                        } else {
+                            // Verificar que el fragmento esté adjunto a una actividad antes de usar Glide
+                            if (getActivity() != null) {
+                                Glide.with(getContext())
+                                        .load(R.drawable.ic_profile_default)
+                                        .transform(new CircleCrop())
+                                        .into(profileImageView);
+                            }
+                        }
                     }
                 }
+                // Ocultar el progreso y mostrar el contenido del perfil después de cargar los datos
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Manejar el error
+                // Manejar el error y ocultar el progreso en caso de fallo
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -109,11 +145,30 @@ public class EditProfileFragment extends Fragment {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
                 profileImageView.setImageBitmap(bitmap);
-                // subir la imagen a Firebase Storage y actualizar el URL en la base de datos
+                uploadImageToFirebase();
             } catch (IOException e) {
                 e.printStackTrace();
                 Toast.makeText(getContext(), "Error al cargar la imagen", Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    private void uploadImageToFirebase() {
+        if (imageUri != null) {
+            progressBar.setVisibility(View.VISIBLE);
+
+            StorageReference fileReference = storageRef.child("profile_images/" + currentUser.getUid() + ".jpg");
+            fileReference.putFile(imageUri)
+                    .addOnSuccessListener(taskSnapshot -> fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                        progressBar.setVisibility(View.GONE);
+
+                        userRef.child("profileImageUrl").setValue(uri.toString());
+                        Toast.makeText(getContext(), "Imagen subida correctamente", Toast.LENGTH_SHORT).show();
+                    }))
+                    .addOnFailureListener(e -> {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getContext(), "Error al subir la imagen", Toast.LENGTH_SHORT).show();
+                    });
         }
     }
 
@@ -129,9 +184,9 @@ public class EditProfileFragment extends Fragment {
         userRef.child("name").setValue(name);
         userRef.child("email").setValue(email);
 
-        // ubir la imagen a Firebase Storage y actualizar el URL en la base de datos si es necesario
-
         Toast.makeText(getContext(), "Datos guardados correctamente", Toast.LENGTH_SHORT).show();
-        getFragmentManager().popBackStack();
+        if (getFragmentManager() != null) {
+            getFragmentManager().popBackStack();
+        }
     }
 }
