@@ -3,12 +3,14 @@ package iesmm.pmdm.autolabibscan.Adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import iesmm.pmdm.autolabibscan.Models.AccessItem;
 import iesmm.pmdm.autolabibscan.R;
@@ -21,17 +23,18 @@ public class AccessAdapter extends RecyclerView.Adapter<AccessAdapter.ViewHolder
         this.accessItems = accessItems;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_access, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         AccessItem item = accessItems.get(position);
         holder.accessTitle.setText("Access");
-        holder.accessDetails.setText("User: " + item.getEmail() + "\n" + item.getDate());
+        holder.accessDetails.setText("User: " + item.getEmail() + "\n" + formatDate(item.getTimestamp()));
     }
 
     @Override
@@ -39,7 +42,12 @@ public class AccessAdapter extends RecyclerView.Adapter<AccessAdapter.ViewHolder
         return accessItems.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    private String formatDate(java.util.Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+        return sdf.format(date);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView accessTitle;
         public TextView accessDetails;
         public ImageView userIcon;
