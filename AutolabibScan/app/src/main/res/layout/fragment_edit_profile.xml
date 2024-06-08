@@ -22,7 +22,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Volver"
+                android:contentDescription="@string/back"
                 app:srcCompat="@drawable/ic_back_blanco"
                 android:layout_marginBottom="16dp"
                 android:layout_gravity="start"/>
@@ -39,7 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_profile_default"
-                    android:contentDescription="Imagen de perfil"/>
+                    android:contentDescription="@string/profile_image"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -52,7 +52,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
-                    android:contentDescription="Editar imagen"
+                    android:contentDescription="@string/edit_image"
                     app:srcCompat="@drawable/ic_edit"
                     app:tint="@android:color/white"/>
             </FrameLayout>
@@ -61,7 +61,7 @@
                 android:id="@+id/editTextName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nombre"
+                android:hint="@string/name"
                 android:layout_marginBottom="16dp"
                 android:padding="10dp"
                 android:textSize="18sp"
@@ -71,7 +71,7 @@
                 android:id="@+id/editTextEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Correo electrónico"
+                android:hint="@string/email"
                 android:layout_marginBottom="16dp"
                 android:padding="10dp"
                 android:textSize="18sp"
@@ -85,7 +85,7 @@
                 android:background="@drawable/btn_background_1"
                 android:drawablePadding="20dp"
                 android:paddingStart="20dp"
-                android:text="Guardar cambios"
+                android:text="@string/save_changes"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 style="@android:style/Widget.Button"

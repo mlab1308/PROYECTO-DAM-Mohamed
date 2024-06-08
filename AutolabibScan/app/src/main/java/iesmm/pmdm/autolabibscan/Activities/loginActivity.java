@@ -103,7 +103,7 @@ public class loginActivity extends AppCompatActivity {
                     // Verificación de si los campos están vacíos
                     if (emailUser.isEmpty() || passwordUser.isEmpty()) {
                         // Mostrar un mensaje si los campos están vacíos
-                        Toast.makeText(loginActivity.this, "Por favor, ingrese correo electrónico y contraseña.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(loginActivity.this, getString(R.string.login_fields_empty), Toast.LENGTH_SHORT).show();
                     } else {
                         // Llamada al método para iniciar sesión del usuario
                         loginUser(emailUser, passwordUser);
@@ -144,8 +144,8 @@ public class loginActivity extends AppCompatActivity {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
-                Log.w("loginActivity", "Google sign in failed", e);
-                Toast.makeText(this, "Google sign in failed: " + e.getStatusCode(), Toast.LENGTH_SHORT).show();
+                Log.w("loginActivity", getString(R.string.google_signin_failed), e);
+                Toast.makeText(this, getString(R.string.google_signin_failed) + ": " + e.getStatusCode(), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -188,7 +188,7 @@ public class loginActivity extends AppCompatActivity {
                                 }
                             } else {
                                 Log.w("loginActivity", "signInWithCredential:failure", task.getException());
-                                Toast.makeText(loginActivity.this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(loginActivity.this, getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show();
                                 updateUI(null);
                             }
                         }
@@ -225,7 +225,7 @@ public class loginActivity extends AppCompatActivity {
                                 }
                             } else {
                                 // Mostrar un mensaje de error si la operación falla
-                                Toast.makeText(loginActivity.this, "No se pudo iniciar sesión. Verifique sus credenciales e inténtelo de nuevo.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(loginActivity.this, getString(R.string.login_failed), Toast.LENGTH_SHORT).show();
                             }
                         }
                     })
@@ -233,7 +233,7 @@ public class loginActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             // Mostrar un mensaje de error si ocurre una excepción durante el inicio de sesión
-                            Toast.makeText(loginActivity.this, "Se produjo un error al iniciar sesión. Por favor, inténtelo de nuevo más tarde.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(loginActivity.this, getString(R.string.login_error), Toast.LENGTH_SHORT).show();
                         }
                     });
         } catch (Exception e) {
