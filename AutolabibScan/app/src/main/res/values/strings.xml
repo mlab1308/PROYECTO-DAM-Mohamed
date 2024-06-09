@@ -39,7 +39,8 @@
     <string name="login_error">Se produjo un error al iniciar sesión. Por favor, inténtelo de nuevo más tarde.</string>
     <string name="no_data_found">No se encontraron datos para la matrícula proporcionada.</string>
     <string name="db_query_error">Error al consultar la base de datos.</string>
-
+    <string name="confirm_deletion_title">Confirmar eliminación</string>
+    <string name="confirm_deletion_message">¿Está seguro de que desea eliminar la matrícula %1$s de favoritos?</string>
     <!-- Access List Activity -->
     <string name="access_list_title">Lista de Accesos</string>
 
@@ -59,6 +60,7 @@
 
     <!-- Favorites Fragment -->
     <string name="favorites_list">Lista de Favoritos</string>
+    <string name="no_favorites">No hay matrículas favoritas guardadas.</string>
 
     <!-- Profile fragment -->
     <string name="profile_name">Nombre</string>
@@ -96,4 +98,6 @@
     <string name="fuel">Combustible</string>
     <string name="brand">Marca</string>
     <string name="plate">Matrícula</string>
+
+
 </resources>

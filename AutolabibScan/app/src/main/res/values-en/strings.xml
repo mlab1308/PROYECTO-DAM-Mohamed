@@ -39,6 +39,8 @@
     <string name="login_error">An error occurred while logging in. Please try again later.</string>
     <string name="no_data_found">No se encontraron datos para la matrícula proporcionada.</string>
     <string name="db_query_error">Error al consultar la base de datos.</string>
+    <string name="confirm_deletion_title">Confirm Deletion</string>
+    <string name="confirm_deletion_message">Are you sure you want to remove plate %1$s from favorites?</string>
 
     <!-- Access List Activity -->
     <string name="access_list_title">Access List</string>
@@ -60,6 +62,7 @@
 
     <!-- Favorites Fragment -->
     <string name="favorites_list">Favorites List</string>
+    <string name="no_favorites">No favorite plates saved.</string>
 
     <!-- Profile fragment -->
     <string name="profile_name">Nombre</string>
@@ -99,4 +102,6 @@
     <string name="fuel">Fuel</string>
     <string name="brand">Brand</string>
     <string name="plate">Plate</string>
+
+
 </resources>

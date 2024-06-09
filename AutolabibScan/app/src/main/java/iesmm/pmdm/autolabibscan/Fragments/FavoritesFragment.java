@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +31,7 @@ public class FavoritesFragment extends Fragment {
     private RecyclerView recyclerViewFavorites;
     private FavoritesAdapter adapter;
     private List<String> favoritePlates;
+    private TextView noFavoritesTextView;
 
     @Nullable
     @Override
@@ -37,6 +39,7 @@ public class FavoritesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
 
         recyclerViewFavorites = view.findViewById(R.id.recyclerViewFavorites);
+        noFavoritesTextView = view.findViewById(R.id.noFavoritesTextView);
 
         setupRecyclerView();
         loadFavoritePlates();
@@ -46,7 +49,7 @@ public class FavoritesFragment extends Fragment {
 
     private void setupRecyclerView() {
         favoritePlates = new ArrayList<>();
-        adapter = new FavoritesAdapter(favoritePlates);
+        adapter = new FavoritesAdapter(getContext(), favoritePlates);
         recyclerViewFavorites.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewFavorites.setAdapter(adapter);
     }
@@ -65,6 +68,7 @@ public class FavoritesFragment extends Fragment {
                         favoritePlates.add(plate);
                     }
                     adapter.notifyDataSetChanged();
+                    checkIfNoFavorites();
                 }
 
                 @Override
@@ -72,6 +76,16 @@ public class FavoritesFragment extends Fragment {
 
                 }
             });
+        }
+    }
+
+    private void checkIfNoFavorites() {
+        if (favoritePlates.isEmpty()) {
+            recyclerViewFavorites.setVisibility(View.GONE);
+            noFavoritesTextView.setVisibility(View.VISIBLE);
+        } else {
+            recyclerViewFavorites.setVisibility(View.VISIBLE);
+            noFavoritesTextView.setVisibility(View.GONE);
         }
     }
 }

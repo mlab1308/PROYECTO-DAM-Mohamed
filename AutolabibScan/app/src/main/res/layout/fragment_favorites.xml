@@ -11,6 +11,7 @@
         android:orientation="vertical"
         android:padding="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
@@ -29,8 +30,16 @@
             android:layout_weight="1"
             android:scrollbars="vertical" />
 
+        <TextView
+            android:id="@+id/noFavoritesTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_favorites"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center" />
     </LinearLayout>
-
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
