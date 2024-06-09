@@ -23,6 +23,11 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 import java.io.ByteArrayOutputStream;
@@ -46,7 +51,6 @@ public class DashboardFragment extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 1;
     private ImageView imageView;
     private Uri imageUri;
-    private TextView txtMatriculaleida;
     private TextInputLayout textInputLayout;
     private TextInputEditText editTextBastidor;
     private ProgressBar progressBar;
@@ -61,7 +65,6 @@ public class DashboardFragment extends Fragment {
         textInputLayout = view.findViewById(R.id.textInputLayout);
         editTextBastidor = view.findViewById(R.id.editTextBastidor);
         imageView = view.findViewById(R.id.imageView);
-        txtMatriculaleida = view.findViewById(R.id.txtMatricula);
         progressBar = view.findViewById(R.id.progressBar);
 
         // Acción al pulsar el icono de subir imagen
@@ -164,39 +167,76 @@ public class DashboardFragment extends Fragment {
     }
 
     private void handleMatriculaInput(String matricula) {
-        // Realiza la consulta a la base de datos con la matrícula
-        txtMatriculaleida.setText("Matrícula leída: " + matricula);
-        Toast.makeText(getActivity(), "Matrícula procesada: " + matricula, Toast.LENGTH_SHORT).show();
+        matricula = matricula.replace(" ", ""); // Elimina cualquier espacio en blanco
+        matricula = matricula.toUpperCase();
+        if (isValidMatricula(matricula)) {
+            // Realiza la consulta a la base de datos con la matrícula
+            Toast.makeText(getActivity(), matricula, Toast.LENGTH_SHORT).show();
 
-        consultaDB(matricula);
+            consultaDB(matricula);
+        } else {
+            // Muestra un mensaje de error si el formato no es válido
+            Toast.makeText(getActivity(), getString(R.string.matricula_invalida), Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private void consultaDB(String matricula) {
+    private boolean isValidMatricula(String matricula) {
+        // Patrón para "0000ABC"
+        String pattern = "^[0-9]{4}[A-Z]{3}$";
+        return matricula.toUpperCase().matches(pattern);
+    }private void consultaDB(String matricula) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("cars");
 
-        // Simulación de datos obtenidos de la base de datos
-        String carBrand = "Volkswagen";
-        String ownersText = "3 Owners";
-        String powerText = "150 CV";
-        String fuelText = "Diesel";
-        String vehicleInfo = "Vehicle Number\nOwner Name\nRegistering authority\nVehicle Class\nFuel Type\nEmission Norm\nVehicle Age\nVehicle Status";
+        databaseReference.orderByChild("plateText").equalTo(matricula.toUpperCase()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot vehicleSnapshot : dataSnapshot.getChildren()) {
+                        String carBrand = vehicleSnapshot.child("brand").getValue(String.class);
+                        String ownersText = vehicleSnapshot.child("owners").getValue(String.class);
+                        String powerText = vehicleSnapshot.child("power").getValue(String.class);
+                        String fuelText = vehicleSnapshot.child("fuel").getValue(String.class);
+                        String bastidor = vehicleSnapshot.child("info").child("Bastidor").getValue(String.class);
+                        String emissionNorm = vehicleSnapshot.child("info").child("EmissionNorm").getValue(String.class);
+                        String fuelType = vehicleSnapshot.child("info").child("FuelType").getValue(String.class);
+                        String registeringAuthority = vehicleSnapshot.child("info").child("RegisteringAuthority").getValue(String.class);
+                        String vehicleAge = vehicleSnapshot.child("info").child("VehicleAge").getValue(String.class);
+                        String vehicleClass = vehicleSnapshot.child("info").child("VehicleClass").getValue(String.class);
+                        String vehicleStatus = vehicleSnapshot.child("info").child("VehicleStatus").getValue(String.class);
 
-        // Crear el Bundle con los datos del vehículo
-        Bundle bundle = new Bundle();
-        bundle.putString("carBrand", carBrand);
-        bundle.putString("plateText", matricula.toUpperCase());
-        bundle.putString("ownersText", ownersText);
-        bundle.putString("powerText", powerText);
-        bundle.putString("fuelText", fuelText);
-        bundle.putString("vehicleInfo", vehicleInfo);
+                        // Crear el Bundle con los datos del vehículo
+                        Bundle bundle = new Bundle();
+                        bundle.putString("carBrand", carBrand);
+                        bundle.putString("plateText", matricula.toUpperCase());
+                        bundle.putString("ownersText", ownersText);
+                        bundle.putString("powerText", powerText);
+                        bundle.putString("fuelText", fuelText);
+                        bundle.putString("Bastidor", bastidor);
+                        bundle.putString("RegisteringAuthority", registeringAuthority);
+                        bundle.putString("VehicleClass", vehicleClass);
+                        bundle.putString("FuelType", fuelType);
+                        bundle.putString("EmissionNorm", emissionNorm);
+                        bundle.putString("VehicleAge", vehicleAge);
+                        bundle.putString("VehicleStatus", vehicleStatus);
 
-        // Crear el ResultFragment y pasarle los datos
-        ResultFragment resultFragment = new ResultFragment();
-        resultFragment.setArguments(bundle);
+                        // Crear el ResultFragment y pasarle los datos
+                        ResultFragment resultFragment = new ResultFragment();
+                        resultFragment.setArguments(bundle);
 
-        // Navegar al ResultFragment
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, resultFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+                        // Navegar al ResultFragment
+                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                        transaction.replace(R.id.fragment_container, resultFragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                    }
+                } else {
+                    Toast.makeText(getActivity(), R.string.no_data_found, Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getActivity(), R.string.db_query_error, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

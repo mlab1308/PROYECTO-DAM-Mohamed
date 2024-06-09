@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">AutolabibScan</string>
     <string name="default_web_client">388872684081-9sgjsvqisrjvrju9uoqb6baa7rdkpf1t.apps.googleusercontent.com</string>
+
     <!-- Activity titles -->
     <string name="title_activity_login">Iniciar Sesión</string>
     <string name="title_activity_register">Registrarse</string>
@@ -36,23 +37,25 @@
     <string name="authentication_failed">Autenticación fallida.</string>
     <string name="login_failed">No se pudo iniciar sesión. Verifique sus credenciales e inténtelo de nuevo.</string>
     <string name="login_error">Se produjo un error al iniciar sesión. Por favor, inténtelo de nuevo más tarde.</string>
+    <string name="no_data_found">No se encontraron datos para la matrícula proporcionada.</string>
+    <string name="db_query_error">Error al consultar la base de datos.</string>
 
     <!-- Access List Activity -->
     <string name="access_list_title">Lista de Accesos</string>
 
     <!-- Dashboard Fragment -->
-    <string name="welcome">Welcome</string>
-    <string name="select_image">Select Image</string>
-    <string name="search_cars_hint">Search Cars...</string>
-    <string name="license_plate">License Plate:</string>
+    <string name="welcome">Bienvenido/a</string>
+    <string name="select_image">Seleccionar Imagen</string>
+    <string name="search_cars_hint">Buscar Coches...</string>
+    <string name="license_plate">Matrícula:</string>
 
     <!-- Edit Profile Fragment -->
-    <string name="back">Back</string>
-    <string name="profile_image">Profile Image</string>
-    <string name="edit_image">Edit Image</string>
-    <string name="name">Name</string>
-    <string name="email">Email</string>
-    <string name="save_changes">Save Changes</string>
+    <string name="back">Volver</string>
+    <string name="profile_image">Imagen de perfil</string>
+    <string name="edit_image">Editar imagen</string>
+    <string name="name">Nombre</string>
+    <string name="email">Correo electrónico</string>
+    <string name="save_changes">Guardar cambios</string>
 
     <!-- Favorites Fragment -->
     <string name="favorites_list">Lista de Favoritos</string>
@@ -72,4 +75,25 @@
     <!-- Plate item -->
     <string name="plate_title">Matrícula</string>
     <string name="plate_icon">Icono de matrícula</string>
+
+    <string name="matricula_leida">Matrícula leída</string>
+    <string name="matricula_procesada">Matrícula procesada</string>
+    <string name="matricula_invalida">Formato de matrícula inválido. Por favor, ingrese en formato 0000ABC.</string>
+
+    <!-- Result Fragment -->
+    <string name="vehicle_found">Vehículo Encontrado</string>
+    <string name="vehicle_info_title">Información del Vehículo</string>
+    <string name="additional_info">Información Adicional</string>
+    <string name="bastidor">Bastidor</string>
+    <string name="registering_authority">Autoridad de Registro</string>
+    <string name="vehicle_class">Clase de Vehículo</string>
+    <string name="fuel_type">Tipo de Combustible</string>
+    <string name="emission_norm">Norma de Emisión</string>
+    <string name="vehicle_age">Edad del Vehículo</string>
+    <string name="vehicle_status">Estado del Vehículo</string>
+    <string name="owners">Propietarios</string>
+    <string name="power">Potencia</string>
+    <string name="fuel">Combustible</string>
+    <string name="brand">Marca</string>
+    <string name="plate">Matrícula</string>
 </resources>

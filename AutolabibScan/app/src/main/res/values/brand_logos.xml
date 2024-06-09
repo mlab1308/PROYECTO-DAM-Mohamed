@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="car_brands">
+        <item>Volkswagen</item>
+        <item>Toyota</item>
+        <item>Ford</item>
+        <item>Honda</item>
+        <item>BMW</item>
+
+    </string-array>
+    <integer-array name="car_brand_logos">
+        <item>@drawable/ic_volkswagen</item>
+        <item>@drawable/ic_toyota</item>
+        <item>@drawable/ic_ford</item>
+        <item>@drawable/ic_honda</item>
+        <item>@drawable/ic_bmw</item>
+
+    </integer-array>
+</resources>
