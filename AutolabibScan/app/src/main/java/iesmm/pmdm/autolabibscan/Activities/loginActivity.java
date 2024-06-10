@@ -243,7 +243,6 @@ public class loginActivity extends AppCompatActivity {
 
     private void fetchUserRoleAndRedirect(String userId, String emailUser) {
         try {
-            // Obtener la referencia del usuario en la base de datos
             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
 
             userRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -251,18 +250,15 @@ public class loginActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         String role = snapshot.child("role").getValue(String.class);
-                        // Verificar el rol del usuario y redirigir a la actividad correspondiente
                         if (role != null) {
-                            redirectToDashboard(userId);
+                            redirectToDashboard(role);
                         } else {
-                            // Si el rol no está definido, establecer un rol por defecto
                             userRef.child("role").setValue("user");
-                            redirectToDashboard(userId);
+                            redirectToDashboard("user");
                         }
                     } else {
-                        // Si el usuario no existe en la base de datos, crear una entrada para el usuario
                         userRef.setValue(new User("", emailUser, "user"));
-                        redirectToDashboard(userId);
+                        redirectToDashboard("user");
                     }
                 }
 
@@ -276,16 +272,15 @@ public class loginActivity extends AppCompatActivity {
         }
     }
 
-    // Método para redirigir al usuario al dashboard
-    private void redirectToDashboard(String userId) {
-        try {
-            Intent intent = new Intent(loginActivity.this, dashboardActivity.class);
-            intent.putExtra("user_id", userId);
-            startActivity(intent);
-            finish();
-        } catch (Exception e) {
-            Log.e("loginActivity", "Error in redirectToDashboard: ", e);
+    private void redirectToDashboard(String role) {
+        Intent intent;
+        if ("admin".equals(role)) {
+            intent = new Intent(this, AdminDashboardActivity.class);
+        } else {
+            intent = new Intent(this, UserDashboardActivity.class);
         }
+        startActivity(intent);
+        finish();
     }
 
     private void logAccess(String email) {

@@ -8,21 +8,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="16dp"
-        android:gravity="center_horizontal">
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/welcomeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/welcome"
-            android:textSize="30sp"
-            android:textStyle="bold"
+            android:layout_gravity="start"
             android:layout_marginBottom="16dp"
             android:gravity="start"
-            android:layout_gravity="start"
-            android:padding="8dp" />
+            android:padding="8dp"
+            android:text="@string/welcome"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -34,30 +34,30 @@
                 android:id="@+id/textInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:startIconDrawable="@drawable/ic_search"
-                app:endIconMode="custom"
-                app:endIconDrawable="@drawable/ic_uploadimage"
-                app:endIconContentDescription="@string/select_image"
+                android:background="@drawable/rounded_edit_text"
+                android:padding="8dp"
                 app:boxBackgroundMode="outline"
-                app:boxCornerRadiusTopStart="16dp"
-                app:boxCornerRadiusTopEnd="16dp"
-                app:boxCornerRadiusBottomStart="16dp"
                 app:boxCornerRadiusBottomEnd="16dp"
+                app:boxCornerRadiusBottomStart="16dp"
+                app:boxCornerRadiusTopEnd="16dp"
+                app:boxCornerRadiusTopStart="16dp"
                 app:boxStrokeColor="#CCCCCC"
                 app:boxStrokeWidth="2dp"
-                android:background="@drawable/rounded_edit_text"
-                android:padding="8dp">
+                app:endIconContentDescription="@string/select_image"
+                app:endIconDrawable="@drawable/ic_uploadimage"
+                app:endIconMode="custom"
+                app:startIconDrawable="@drawable/ic_search">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextBastidor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/search_cars_hint"
-                    android:inputType="text"
                     android:background="@android:color/transparent"
                     android:drawablePadding="10dp"
-                    android:paddingStart="50dp"
-                    android:imeOptions="actionDone"/>
+                    android:hint="@string/search_cars_hint"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:paddingStart="50dp" />
             </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>
 
@@ -67,29 +67,25 @@
             android:layout_height="200dp"
             android:layout_marginTop="16dp"
             android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:visibility="gone"
             android:background="@drawable/rounded_image_background"
-            android:padding="8dp"/>
+            android:padding="8dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
 
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
-            android:padding="8dp"/>
+            android:padding="8dp"
+            android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/txtMatricula"
-            android:layout_width="wrap_content"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPagerCarousel"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/license_plate"
-            android:textStyle="bold"
-            android:visibility="gone"
-            android:padding="8dp"/>
+            android:layout_marginTop="16dp" />
 
     </LinearLayout>
 </RelativeLayout>

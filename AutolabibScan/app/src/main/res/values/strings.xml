@@ -1,6 +1,8 @@
 <resources>
+    <!-- Existing strings -->
     <string name="app_name">AutolabibScan</string>
     <string name="default_web_client">388872684081-9sgjsvqisrjvrju9uoqb6baa7rdkpf1t.apps.googleusercontent.com</string>
+
     <!-- Activity titles -->
     <string name="title_activity_login">Iniciar Sesión</string>
     <string name="title_activity_register">Registrarse</string>
@@ -36,26 +38,39 @@
     <string name="authentication_failed">Autenticación fallida.</string>
     <string name="login_failed">No se pudo iniciar sesión. Verifique sus credenciales e inténtelo de nuevo.</string>
     <string name="login_error">Se produjo un error al iniciar sesión. Por favor, inténtelo de nuevo más tarde.</string>
-
+    <string name="no_data_found">No se encontraron datos para la matrícula proporcionada.</string>
+    <string name="db_query_error">Error al consultar la base de datos.</string>
+    <string name="confirm_deletion_title">Confirmar eliminación</string>
+    <string name="confirm_deletion_message">¿Está seguro de que desea eliminar la matrícula %1$s de favoritos?</string>
     <!-- Access List Activity -->
     <string name="access_list_title">Lista de Accesos</string>
 
     <!-- Dashboard Fragment -->
-    <string name="welcome">Welcome</string>
-    <string name="select_image">Select Image</string>
-    <string name="search_cars_hint">Search Cars...</string>
-    <string name="license_plate">License Plate:</string>
+    <string name="welcome">Bienvenido/a</string>
+    <string name="select_image">Seleccionar Imagen</string>
+    <string name="search_cars_hint">Buscar Coches...</string>
+    <string name="license_plate">Matrícula:</string>
+    <string name="error_loading_image">Error al cargar la imagen</string>
+    <string name="plate_not_detected">Matrícula no detectada</string>
+    <string name="error_colon">Error: </string>
+    <string name="error_processing_image">Error al procesar la imagen</string>
+    <string name="error_creating_file">Error al crear el archivo</string>
+    <string name="no_plate_detected">Matrícula no detectada</string>
+    <string name="server_error">Error del servidor</string>
+    <string name="processing_error">Error al procesar la imagen</string>
+    <string name="api_call_failure">Error en la llamada a la API</string>
 
     <!-- Edit Profile Fragment -->
-    <string name="back">Back</string>
-    <string name="profile_image">Profile Image</string>
-    <string name="edit_image">Edit Image</string>
-    <string name="name">Name</string>
-    <string name="email">Email</string>
-    <string name="save_changes">Save Changes</string>
+    <string name="back">Volver</string>
+    <string name="profile_image">Imagen de perfil</string>
+    <string name="edit_image">Editar imagen</string>
+    <string name="name">Nombre</string>
+    <string name="email">Correo electrónico</string>
+    <string name="save_changes">Guardar cambios</string>
 
     <!-- Favorites Fragment -->
     <string name="favorites_list">Lista de Favoritos</string>
+    <string name="no_favorites">No hay matrículas favoritas guardadas.</string>
 
     <!-- Profile fragment -->
     <string name="profile_name">Nombre</string>
@@ -72,4 +87,58 @@
     <!-- Plate item -->
     <string name="plate_title">Matrícula</string>
     <string name="plate_icon">Icono de matrícula</string>
+
+    <string name="matricula_leida">Matrícula leída</string>
+    <string name="matricula_procesada">Matrícula procesada</string>
+    <string name="matricula_invalida">Formato de matrícula inválido. Por favor, ingrese en formato 0000ABC.</string>
+
+    <!-- Result Fragment -->
+    <string name="vehicle_found">Vehículo Encontrado</string>
+    <string name="vehicle_info_title">Información del Vehículo</string>
+    <string name="additional_info">Información Adicional</string>
+    <string name="bastidor">Bastidor</string>
+    <string name="registering_authority">Autoridad de Registro</string>
+    <string name="fuel_type">Tipo de Combustible</string>
+    <string name="emission_norm">Norma de Emisión</string>
+    <string name="manufacturing_date">Fecha de Fabricación</string>
+    <string name="vehicle_status">Estado del Vehículo</string>
+    <string name="owners">Propietarios</string>
+    <string name="power">Potencia</string>
+    <string name="fuel">Combustible</string>
+    <string name="brand">Marca</string>
+    <string name="plate">Matrícula</string>
+
+    <!-- Carousel and other additions -->
+    <string name="vehicle_age">Edad del Vehículo</string>
+    <string name="add_to_favorites">Añadido a favoritos</string>
+    <string name="remove_from_favorites">Eliminado de favoritos</string>
+    <string name="error_checking_favorites">Error al consultar el estado de favoritos</string>
+    <string name="active">Activo</string>
+    <string name="inactive">Inactivo</string>
+
+    <!--Create car-->
+    <string name="vehicle_created_successfully">Vehículo creado con éxito</string>
+    <string name="failed_to_create_vehicle">Error al crear el vehículo</string>
+    <string name="brand_required">La marca es obligatoria</string>
+    <string name="plate_number_required">El número de matrícula es obligatorio</string>
+    <string name="owners_required">El número de propietarios es obligatorio</string>
+    <string name="owners_positive_number">El número de propietarios debe ser un número positivo</string>
+    <string name="owners_valid_number">El número de propietarios debe ser un número válido</string>
+    <string name="power_required">La potencia es obligatoria</string>
+    <string name="fuel_required">El tipo de combustible es obligatorio</string>
+    <string name="bastidor_required">El número de chasis (bastidor) es obligatorio</string>
+    <string name="emission_norm_required">La norma de emisión es obligatoria</string>
+    <string name="registering_authority_required">La autoridad de registro es obligatoria</string>
+    <string name="manufacturing_date_required">La fecha de fabricación es obligatoria</string>
+    <string name="image_url_required">La URL de la imagen es obligatoria</string>
+
+    <!--nav drawer-->
+    <string name="nav_home">Inicio</string>
+    <string name="nav_favorites">Favoritos</string>
+    <string name="nav_profile">Perfil</string>
+    <string name="nav_access_list">Lista de Accesos</string>
+    <string name="nav_create_vehicle">Crear Vehículo</string>
+    <string name="nav_logout">Cerrar Sesión</string>
+    <string name="navigation_drawer_open">Abrir menú de navegación</string>
+    <string name="navigation_drawer_close">Cerrar menú de navegación</string>
 </resources>

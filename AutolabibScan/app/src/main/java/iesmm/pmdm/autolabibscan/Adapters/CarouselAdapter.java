@@ -1,12 +1,10 @@
 package iesmm.pmdm.autolabibscan.Adapters;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,8 +14,8 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,69 +25,80 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 
 import iesmm.pmdm.autolabibscan.Fragments.ResultFragment;
+import iesmm.pmdm.autolabibscan.Models.Vehicle;
 import iesmm.pmdm.autolabibscan.R;
 
-public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoriteViewHolder> {
+public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder> {
 
-    private List<String> favoritePlates;
     private Context context;
+    private List<Vehicle> vehicleList;
 
-    // Constructor del adaptador que recibe la lista de matrículas favoritas
-    public FavoritesAdapter(Context context, List<String> favoritePlates) {
+    public CarouselAdapter(Context context, List<Vehicle> vehicleList) {
         this.context = context;
-        this.favoritePlates = favoritePlates;
+        this.vehicleList = vehicleList;
     }
 
     @NonNull
     @Override
-    public FavoriteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflar el layout para cada elemento de la lista
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_favorite_plate, parent, false);
-        return new FavoriteViewHolder(view);
+    public CarouselViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_carousel, parent, false);
+        return new CarouselViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FavoriteViewHolder holder, int position) {
-        // Obtener la matrícula en la posición actual
-        String plate = favoritePlates.get(position);
-        holder.plateTextView.setText(plate);
-
-        // Establecer el listener para el botón de eliminar
-        holder.deleteButton.setOnClickListener(v -> {
-            // Mostrar un diálogo de confirmación antes de eliminar
-            new AlertDialog.Builder(context)
-                    .setTitle(context.getString(R.string.confirm_deletion_title))
-                    .setMessage(context.getString(R.string.confirm_deletion_message, plate))
-                    .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                        // Eliminar la matrícula de la base de datos y de la lista
-                        removeFavorite(plate);
-                        favoritePlates.remove(position);
-                        notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, favoritePlates.size());
-                    })
-                    .setNegativeButton(android.R.string.no, null)
-                    .show();
-        });
-
-        // Establecer el listener para navegar al ResultFragment al hacer clic en la matrícula
-        holder.itemView.setOnClickListener(v -> {
-            navigateToResultFragment(plate);
-        });
+    public void onBindViewHolder(@NonNull CarouselViewHolder holder, int position) {
+        Vehicle vehicle = vehicleList.get(position);
+        holder.bind(vehicle);
     }
 
     @Override
     public int getItemCount() {
-        // Retornar el tamaño de la lista de matrículas favoritas
-        return favoritePlates.size();
+        return vehicleList.size();
     }
 
-    // Método para eliminar una matrícula de la base de datos
-    private void removeFavorite(String plateText) {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            String userId = currentUser.getUid();
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("favorites").child(userId).child(plateText);
-            databaseReference.removeValue();
+    class CarouselViewHolder extends RecyclerView.ViewHolder {
+        TextView brandTextView;
+        TextView plateTextView;
+        TextView powerTextView;
+        TextView fuelTypeTextView;
+        ImageView vehicleImageView;
+
+        CarouselViewHolder(View itemView) {
+            super(itemView);
+            brandTextView = itemView.findViewById(R.id.brandTextView);
+            plateTextView = itemView.findViewById(R.id.plateTextView);
+            powerTextView = itemView.findViewById(R.id.powerTextView);
+            fuelTypeTextView = itemView.findViewById(R.id.fuelTypeTextView);
+            vehicleImageView = itemView.findViewById(R.id.vehicleImageView);
+
+            // Set onClick listener
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                Vehicle vehicle = vehicleList.get(position);
+                navigateToResultFragment(vehicle.getPlateText());
+            });
+        }
+
+        void bind(final Vehicle vehicle) {
+            brandTextView.setText(vehicle.getBrand());
+            plateTextView.setText(vehicle.getPlateText());
+            powerTextView.setText(vehicle.getPower());
+            fuelTypeTextView.setText(vehicle.getFuel());
+
+            String imageUrl = vehicle.getImageUrl();
+            if (imageUrl == null || imageUrl.isEmpty()) {
+                // Cargar imagen por defecto
+                Glide.with(itemView.getContext())
+                        .load(R.drawable.default_vehicle_carousel)
+                        .apply(new RequestOptions().centerCrop())
+                        .into(vehicleImageView);
+            } else {
+                // Cargar imagen desde la URL
+                Glide.with(itemView.getContext())
+                        .load(imageUrl)
+                        .apply(new RequestOptions().centerCrop())
+                        .into(vehicleImageView);
+            }
         }
     }
 
@@ -103,20 +112,20 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot vehicleSnapshot : dataSnapshot.getChildren()) {
                         String carBrand = vehicleSnapshot.child("brand").getValue(String.class);
-                        int owners = vehicleSnapshot.child("owners").getValue(Integer.class); // Actualizado para obtener Integer
+                        int owners = vehicleSnapshot.child("owners").getValue(Integer.class);
                         String powerText = vehicleSnapshot.child("power").getValue(String.class);
                         String fuelText = vehicleSnapshot.child("fuel").getValue(String.class);
                         String bastidor = vehicleSnapshot.child("info").child("Bastidor").getValue(String.class);
                         String emissionNorm = vehicleSnapshot.child("info").child("EmissionNorm").getValue(String.class);
                         String registeringAuthority = vehicleSnapshot.child("info").child("RegisteringAuthority").getValue(String.class);
                         String manufacturingDate = vehicleSnapshot.child("info").child("ManufacturingDate").getValue(String.class);
-                        boolean vehicleStatus = vehicleSnapshot.child("vehicleStatus").getValue(Boolean.class); // Actualizado para obtener Boolean
+                        boolean vehicleStatus = vehicleSnapshot.child("vehicleStatus").getValue(Boolean.class);
                         String imageUrl = vehicleSnapshot.child("imageUrl").getValue(String.class);
 
                         Bundle bundle = new Bundle();
                         bundle.putString("carBrand", carBrand);
                         bundle.putString("plateText", plateText.toUpperCase());
-                        bundle.putString("ownersText", owners + " Owners"); // Concatenar " Owners"
+                        bundle.putString("ownersText", owners + " Owners");
                         bundle.putString("powerText", powerText);
                         bundle.putString("fuelText", fuelText);
                         bundle.putString("Bastidor", bastidor);
@@ -144,21 +153,5 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
                 Toast.makeText(context, R.string.db_query_error, Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-
-    // ViewHolder para cada elemento de la lista
-    static class FavoriteViewHolder extends RecyclerView.ViewHolder {
-        TextView plateTextView;
-        ImageView plateIcon;
-        ImageButton deleteButton;
-
-        FavoriteViewHolder(View itemView) {
-            super(itemView);
-            // Referencias a los elementos de la vista
-            plateTextView = itemView.findViewById(R.id.txtPlate);
-            plateIcon = itemView.findViewById(R.id.imgPlateIcon);
-            deleteButton = itemView.findViewById(R.id.btnDelete);
-        }
     }
 }
