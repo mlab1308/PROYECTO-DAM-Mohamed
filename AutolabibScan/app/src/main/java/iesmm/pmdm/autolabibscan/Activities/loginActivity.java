@@ -111,14 +111,6 @@ public class loginActivity extends AppCompatActivity {
                 }
             });
 
-            // Verificar si el usuario ya está autenticado
-            FirebaseUser currentUser = mAuth.getCurrentUser();
-            if (currentUser != null) {
-                // Registrar el acceso
-                logAccess(currentUser.getEmail());
-                // Redirigir a la actividad correspondiente
-                redirectToDashboard(currentUser.getUid());
-            }
         } catch (Exception e) {
             Log.e("loginActivity", "Error in onCreate: ", e);
         }

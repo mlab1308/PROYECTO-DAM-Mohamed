@@ -1,9 +1,11 @@
-
 package iesmm.pmdm.autolabibscan.Activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -13,37 +15,39 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import iesmm.pmdm.autolabibscan.Fragments.AccessListFragment;
 import iesmm.pmdm.autolabibscan.Fragments.CreateVehicleFragment;
 import iesmm.pmdm.autolabibscan.Fragments.DashboardFragment;
 import iesmm.pmdm.autolabibscan.Fragments.FavoritesFragment;
 import iesmm.pmdm.autolabibscan.Fragments.ProfileFragment;
+import iesmm.pmdm.autolabibscan.Models.User;
 import iesmm.pmdm.autolabibscan.R;
 
 public class AdminDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
     private FirebaseAuth mAuth;
+    private DatabaseReference userRef;
+    private TextView textViewAdminName, textViewAdminEmail;
+    private ImageView imageViewAdminProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_dashboard);
 
-        // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
-
-        // Check if user is authenticated
-        if (mAuth.getCurrentUser() == null) {
-            redirectToLogin();
-            return;
-        }
-
-        // Set up the Toolbar
+        // Set up the toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -55,17 +59,28 @@ public class AdminDashboardActivity extends AppCompatActivity implements Navigat
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        // Inflate the header view and get references to the views
+        View headerView = navigationView.getHeaderView(0);
+        textViewAdminName = headerView.findViewById(R.id.textViewAdminName);
+        textViewAdminEmail = headerView.findViewById(R.id.textViewAdminEmail);
+        imageViewAdminProfile = headerView.findViewById(R.id.imageViewAdminProfile);
+
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (currentUser != null) {
+            userRef = FirebaseDatabase.getInstance().getReference().child("users").child(currentUser.getUid());
+            loadAdminData();
+        } else {
+            // Handle the case where currentUser is null
+        }
+
         // Load default fragment
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.admin_fragment_container, new DashboardFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
         }
-    }
-
-    private void redirectToLogin() {
-        Intent intent = new Intent(this, loginActivity.class);
-        startActivity(intent);
-        finish();
     }
 
     @Override
@@ -99,5 +114,51 @@ public class AdminDashboardActivity extends AppCompatActivity implements Navigat
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START);
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void loadAdminData() {
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    User user = snapshot.getValue(User.class);
+                    if (user != null) {
+                        textViewAdminName.setText(user.getName());
+                        textViewAdminEmail.setText(user.getEmail());
+
+                        // Load profile image if exists, otherwise load default image
+                        if (user.getProfileImageUrl() != null && !user.getProfileImageUrl().isEmpty()) {
+                            Glide.with(AdminDashboardActivity.this)
+                                    .load(user.getProfileImageUrl())
+                                    .transform(new CircleCrop())
+                                    .into(imageViewAdminProfile);
+                        } else {
+                            Glide.with(AdminDashboardActivity.this)
+                                    .load(R.drawable.ic_profile_default)
+                                    .transform(new CircleCrop())
+                                    .into(imageViewAdminProfile);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(AdminDashboardActivity.this, "Failed to load admin data", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
