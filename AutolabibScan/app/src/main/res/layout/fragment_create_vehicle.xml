@@ -1,0 +1,94 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Vehicle"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"/>
+
+        <EditText
+            android:id="@+id/et_brand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Brand"/>
+
+        <EditText
+            android:id="@+id/et_plate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Plate Number"/>
+
+        <EditText
+            android:id="@+id/et_owners"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Owners"/>
+
+        <EditText
+            android:id="@+id/et_power"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Power"/>
+
+        <EditText
+            android:id="@+id/et_fuel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Fuel"/>
+
+        <EditText
+            android:id="@+id/et_bastidor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Chassis (Bastidor)"/>
+
+        <EditText
+            android:id="@+id/et_emission_norm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Emission Norm"/>
+
+        <EditText
+            android:id="@+id/et_registering_authority"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Registering Authority"/>
+
+        <EditText
+            android:id="@+id/et_manufacturing_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Manufacturing Date"/>
+
+        <EditText
+            android:id="@+id/et_image_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Image URL"/>
+
+        <Switch
+            android:id="@+id/switch_vehicle_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vehicle Status"/>
+
+        <Button
+            android:id="@+id/btn_create_vehicle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Vehicle"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"/>
+    </LinearLayout>
+</ScrollView>

@@ -1,4 +1,3 @@
-
 <resources>
     <!-- Existing strings -->
     <string name="app_name">AutolabibScan</string>
@@ -117,4 +116,29 @@
     <string name="active">Activo</string>
     <string name="inactive">Inactivo</string>
 
+    <!--Create car-->
+    <string name="vehicle_created_successfully">Vehículo creado con éxito</string>
+    <string name="failed_to_create_vehicle">Error al crear el vehículo</string>
+    <string name="brand_required">La marca es obligatoria</string>
+    <string name="plate_number_required">El número de matrícula es obligatorio</string>
+    <string name="owners_required">El número de propietarios es obligatorio</string>
+    <string name="owners_positive_number">El número de propietarios debe ser un número positivo</string>
+    <string name="owners_valid_number">El número de propietarios debe ser un número válido</string>
+    <string name="power_required">La potencia es obligatoria</string>
+    <string name="fuel_required">El tipo de combustible es obligatorio</string>
+    <string name="bastidor_required">El número de chasis (bastidor) es obligatorio</string>
+    <string name="emission_norm_required">La norma de emisión es obligatoria</string>
+    <string name="registering_authority_required">La autoridad de registro es obligatoria</string>
+    <string name="manufacturing_date_required">La fecha de fabricación es obligatoria</string>
+    <string name="image_url_required">La URL de la imagen es obligatoria</string>
+
+    <!--nav drawer-->
+    <string name="nav_home">Inicio</string>
+    <string name="nav_favorites">Favoritos</string>
+    <string name="nav_profile">Perfil</string>
+    <string name="nav_access_list">Lista de Accesos</string>
+    <string name="nav_create_vehicle">Crear Vehículo</string>
+    <string name="nav_logout">Cerrar Sesión</string>
+    <string name="navigation_drawer_open">Abrir menú de navegación</string>
+    <string name="navigation_drawer_close">Cerrar menú de navegación</string>
 </resources>

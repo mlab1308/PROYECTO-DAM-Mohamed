@@ -116,4 +116,29 @@
     <string name="active">Active</string>
     <string name="inactive">Inactive</string>
 
+    <!--CReate car-->
+    <string name="vehicle_created_successfully">Vehicle created successfully</string>
+    <string name="failed_to_create_vehicle">Failed to create vehicle</string>
+    <string name="brand_required">Brand is required</string>
+    <string name="plate_number_required">Plate Number is required</string>
+    <string name="owners_required">Owners is required</string>
+    <string name="owners_positive_number">Owners must be a positive number</string>
+    <string name="owners_valid_number">Owners must be a valid number</string>
+    <string name="power_required">Power is required</string>
+    <string name="fuel_required">Fuel is required</string>
+    <string name="bastidor_required">Chassis (Bastidor) is required</string>
+    <string name="emission_norm_required">Emission Norm is required</string>
+    <string name="registering_authority_required">Registering Authority is required</string>
+    <string name="manufacturing_date_required">Manufacturing Date is required</string>
+    <string name="image_url_required">Image is required</string>
+
+    <!--nav drawer-->
+    <string name="nav_home">Home</string>
+    <string name="nav_favorites">Favorites</string>
+    <string name="nav_profile">Profile</string>
+    <string name="nav_access_list">Access List</string>
+    <string name="nav_create_vehicle">Create Vehicle</string>
+    <string name="nav_logout">Logout</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
