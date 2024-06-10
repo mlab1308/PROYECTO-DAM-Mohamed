@@ -4,7 +4,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    private static final String BASE_URL = "http://172.22.239.37/";  // Para emulador de Android
+    private static final String BASE_URL = "http://172.22.239.37:5000";  // Dirección IP de la máquina virtual con el puerto correcto
     private static Retrofit retrofit;
 
     public static Retrofit getClient() {

@@ -216,13 +216,6 @@
                         android:layout_marginTop="8dp" />
 
                     <TextView
-                        android:id="@+id/vehicleClass"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/vehicle_class"
-                        android:layout_marginTop="8dp" />
-
-                    <TextView
                         android:id="@+id/fuelType"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -237,10 +230,10 @@
                         android:layout_marginTop="8dp" />
 
                     <TextView
-                        android:id="@+id/vehicleAge"
+                        android:id="@+id/manufacturingDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/vehicle_age"
+                        android:text="@string/manufacturing_date"
                         android:layout_marginTop="8dp" />
 
                     <TextView

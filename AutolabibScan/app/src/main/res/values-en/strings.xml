@@ -3,7 +3,7 @@
     <string name="default_web_client">388872684081-9sgjsvqisrjvrju9uoqb6baa7rdkpf1t.apps.googleusercontent.com</string>
 
     <!-- Activity titles -->
-    <string name="title_activity_login">Login</string>
+    <string name="title_activity_login">Log In</string>
     <string name="title_activity_register">Register</string>
     <string name="title_activity_dashboard">Dashboard</string>
     <string name="title_activity_welcome">Welcome</string>
@@ -13,63 +13,71 @@
     <string name="app_author">by Mohamed</string>
     <string name="email_hint">Email</string>
     <string name="password_hint">Password</string>
-    <string name="forgot_password">Forgot?</string>
+    <string name="forgot_password">Forgot your password?</string>
     <string name="login">Log In</string>
-    <string name="register_redirect">Don\'t have an account? Sign up</string>
+    <string name="register_redirect">Don\'t have an account? Register</string>
     <string name="or_continue_with">Or continue with</string>
-    <string name="google_login">Google Login</string>
-    <string name="facebook_login">Facebook Login</string>
-    <string name="twitter_login">Twitter Login</string>
+    <string name="google_login">Log in with Google</string>
+    <string name="facebook_login">Log in with Facebook</string>
+    <string name="twitter_login">Log in with Twitter</string>
 
     <!-- Register activity -->
     <string name="first_name_hint">First Name</string>
     <string name="last_name_hint">Last Name</string>
     <string name="confirm_password_hint">Confirm Password</string>
     <string name="register">Register</string>
-    <string name="login_redirect">Already have an account? Login</string>
+    <string name="login_redirect">Already have an account? Log In</string>
 
     <!-- Toast messages -->
-    <string name="register_success">Successful registration</string>
+    <string name="register_success">Registration successful</string>
     <string name="register_db_error">Error registering in the database. Please try again.</string>
-    <string name="register_error">Registration failed. Please try again.</string>
+    <string name="register_error">Error registering. Please try again.</string>
     <string name="login_fields_empty">Please enter email and password.</string>
-    <string name="google_signin_failed">Google sign in failed</string>
-    <string name="authentication_failed">Authentication Failed.</string>
-    <string name="login_failed">Login failed. Check your credentials and try again.</string>
+    <string name="google_signin_failed">Error signing in with Google</string>
+    <string name="authentication_failed">Authentication failed.</string>
+    <string name="login_failed">Login failed. Please check your credentials and try again.</string>
     <string name="login_error">An error occurred while logging in. Please try again later.</string>
-    <string name="no_data_found">No se encontraron datos para la matrícula proporcionada.</string>
-    <string name="db_query_error">Error al consultar la base de datos.</string>
-    <string name="confirm_deletion_title">Confirm Deletion</string>
-    <string name="confirm_deletion_message">Are you sure you want to remove plate %1$s from favorites?</string>
+    <string name="no_data_found">No data found for the provided license plate.</string>
+    <string name="db_query_error">Error querying the database.</string>
+    <string name="confirm_deletion_title">Confirm deletion</string>
+    <string name="confirm_deletion_message">Are you sure you want to delete the license plate %1$s from favorites?</string>
 
     <!-- Access List Activity -->
     <string name="access_list_title">Access List</string>
 
-
     <!-- Dashboard Fragment -->
-    <string name="welcome">Bienvenido/a</string>
-    <string name="select_image">Seleccionar Imagen</string>
-    <string name="search_cars_hint">Buscar Coches...</string>
-    <string name="license_plate">Matrícula:</string>
+    <string name="welcome">Welcome</string>
+    <string name="select_image">Select Image</string>
+    <string name="search_cars_hint">Search Cars...</string>
+    <string name="license_plate">License Plate:</string>
+    <string name="error_loading_image">Error loading image</string>
+    <string name="plate_not_detected">License plate not detected</string>
+    <string name="error_colon">Error: </string>
+    <string name="error_processing_image">Error processing image</string>
+    <string name="error_creating_file">Error creating file</string>
+    <string name="no_plate_detected">License plate not detected</string>
+    <string name="server_error">Server error</string>
+    <string name="processing_error">Error processing image</string>
+    <string name="api_call_failure">API call failure</string>
 
     <!-- Edit Profile Fragment -->
-    <string name="back">Volver</string>
-    <string name="profile_image">Imagen de perfil</string>
-    <string name="edit_image">Editar imagen</string>
-    <string name="name">Nombre</string>
-    <string name="email">Correo electrónico</string>
-    <string name="save_changes">Guardar cambios</string>
+    <string name="back">Back</string>
+    <string name="profile_image">Profile Image</string>
+    <string name="edit_image">Edit Image</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="save_changes">Save Changes</string>
 
     <!-- Favorites Fragment -->
     <string name="favorites_list">Favorites List</string>
-    <string name="no_favorites">No favorite plates saved.</string>
+    <string name="no_favorites">No favorite license plates saved.</string>
 
     <!-- Profile fragment -->
-    <string name="profile_name">Nombre</string>
-    <string name="profile_email">correo@gmail.com</string>
+    <string name="profile_name">Name</string>
+    <string name="profile_email">email@example.com</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="my_favorites">My Favorites</string>
-    <string name="logout">Logout</string>
+    <string name="logout">Log Out</string>
 
     <!-- Access item -->
     <string name="user_icon">User icon</string>
@@ -77,31 +85,35 @@
     <string name="access_details">User: example@gmail.com\n24/04/2024 15:31</string>
 
     <!-- Plate item -->
-    <string name="plate_title">Plate</string>
-    <string name="plate_icon">Plate icon</string>
+    <string name="plate_title">License Plate</string>
+    <string name="plate_icon">License plate icon</string>
 
-    <string name="matricula_leida">Plate read</string>
-    <string name="matricula_procesada">Processed plate</string>
-    <string name="matricula_invalida">Invalid plate format. Please enter in 0000ABC format.</string>
-
+    <string name="matricula_leida">License plate read</string>
+    <string name="matricula_procesada">License plate processed</string>
+    <string name="matricula_invalida">Invalid license plate format. Please enter in 0000ABC format.</string>
 
     <!-- Result Fragment -->
-
     <string name="vehicle_found">Vehicle Found</string>
     <string name="vehicle_info_title">Vehicle Information</string>
     <string name="additional_info">Additional Information</string>
-    <string name="bastidor">Bastidor</string>
+    <string name="bastidor">Chassis</string>
     <string name="registering_authority">Registering Authority</string>
-    <string name="vehicle_class">Vehicle Class</string>
     <string name="fuel_type">Fuel Type</string>
     <string name="emission_norm">Emission Norm</string>
-    <string name="vehicle_age">Vehicle Age</string>
+    <string name="manufacturing_date">Manufacturing Date</string>
     <string name="vehicle_status">Vehicle Status</string>
     <string name="owners">Owners</string>
     <string name="power">Power</string>
     <string name="fuel">Fuel</string>
     <string name="brand">Brand</string>
-    <string name="plate">Plate</string>
+    <string name="plate">License Plate</string>
 
+    <!-- Carousel and other additions -->
+    <string name="vehicle_age">Vehicle Age</string>
+    <string name="add_to_favorites">Added to favorites</string>
+    <string name="remove_from_favorites">Removed from favorites</string>
+    <string name="error_checking_favorites">Error checking favorite status</string>
+    <string name="active">Active</string>
+    <string name="inactive">Inactive</string>
 
 </resources>

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -102,30 +103,28 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot vehicleSnapshot : dataSnapshot.getChildren()) {
                         String carBrand = vehicleSnapshot.child("brand").getValue(String.class);
-                        String ownersText = vehicleSnapshot.child("owners").getValue(String.class);
+                        int owners = vehicleSnapshot.child("owners").getValue(Integer.class); // Actualizado para obtener Integer
                         String powerText = vehicleSnapshot.child("power").getValue(String.class);
                         String fuelText = vehicleSnapshot.child("fuel").getValue(String.class);
                         String bastidor = vehicleSnapshot.child("info").child("Bastidor").getValue(String.class);
                         String emissionNorm = vehicleSnapshot.child("info").child("EmissionNorm").getValue(String.class);
-                        String fuelType = vehicleSnapshot.child("info").child("FuelType").getValue(String.class);
                         String registeringAuthority = vehicleSnapshot.child("info").child("RegisteringAuthority").getValue(String.class);
-                        String vehicleAge = vehicleSnapshot.child("info").child("VehicleAge").getValue(String.class);
-                        String vehicleClass = vehicleSnapshot.child("info").child("VehicleClass").getValue(String.class);
-                        String vehicleStatus = vehicleSnapshot.child("info").child("VehicleStatus").getValue(String.class);
+                        String manufacturingDate = vehicleSnapshot.child("info").child("ManufacturingDate").getValue(String.class);
+                        boolean vehicleStatus = vehicleSnapshot.child("vehicleStatus").getValue(Boolean.class); // Actualizado para obtener Boolean
+                        String imageUrl = vehicleSnapshot.child("imageUrl").getValue(String.class);
 
                         Bundle bundle = new Bundle();
                         bundle.putString("carBrand", carBrand);
                         bundle.putString("plateText", plateText.toUpperCase());
-                        bundle.putString("ownersText", ownersText);
+                        bundle.putString("ownersText", owners + " Owners"); // Concatenar " Owners"
                         bundle.putString("powerText", powerText);
                         bundle.putString("fuelText", fuelText);
                         bundle.putString("Bastidor", bastidor);
                         bundle.putString("EmissionNorm", emissionNorm);
-                        bundle.putString("FuelType", fuelType);
                         bundle.putString("RegisteringAuthority", registeringAuthority);
-                        bundle.putString("VehicleAge", vehicleAge);
-                        bundle.putString("VehicleClass", vehicleClass);
-                        bundle.putString("VehicleStatus", vehicleStatus);
+                        bundle.putString("ManufacturingDate", manufacturingDate);
+                        bundle.putBoolean("VehicleStatus", vehicleStatus);
+                        bundle.putString("ImageUrl", imageUrl);
 
                         ResultFragment resultFragment = new ResultFragment();
                         resultFragment.setArguments(bundle);
@@ -135,15 +134,18 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
                         transaction.addToBackStack(null);
                         transaction.commit();
                     }
+                } else {
+                    Toast.makeText(context, R.string.no_data_found, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Manejar el error si la consulta es cancelada
+                Toast.makeText(context, R.string.db_query_error, Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 
     // ViewHolder para cada elemento de la lista
     static class FavoriteViewHolder extends RecyclerView.ViewHolder {

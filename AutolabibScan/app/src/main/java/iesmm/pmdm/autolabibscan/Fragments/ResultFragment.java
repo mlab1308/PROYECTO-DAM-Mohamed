@@ -26,10 +26,10 @@ import iesmm.pmdm.autolabibscan.R;
 
 public class ResultFragment extends Fragment {
 
-    private ImageView carLogo, ownersIcon, powerIcon, fuelIcon;
+    private ImageView carLogo;
     private TextView carBrand, plateText, ownersText, powerText, fuelText;
     private ImageButton backButton, favoriteButton;
-    private TextView bastidor, registeringAuthority, vehicleClass, fuelType, emissionNorm, vehicleAge, vehicleStatus;
+    private TextView bastidor, registeringAuthority, emissionNorm, manufacturingDate, vehicleStatus;
 
     private String[] carBrands;
     private int[] carBrandLogos;
@@ -44,9 +44,6 @@ public class ResultFragment extends Fragment {
         backButton = view.findViewById(R.id.backButton);
         favoriteButton = view.findViewById(R.id.favoriteButton);
         carLogo = view.findViewById(R.id.carLogo);
-        ownersIcon = view.findViewById(R.id.ownersIcon);
-        powerIcon = view.findViewById(R.id.powerIcon);
-        fuelIcon = view.findViewById(R.id.fuelIcon);
 
         carBrand = view.findViewById(R.id.carBrand);
         plateText = view.findViewById(R.id.plateText);
@@ -56,10 +53,8 @@ public class ResultFragment extends Fragment {
 
         bastidor = view.findViewById(R.id.bastidor);
         registeringAuthority = view.findViewById(R.id.registeringAuthority);
-        vehicleClass = view.findViewById(R.id.vehicleClass);
-        fuelType = view.findViewById(R.id.fuelType);
         emissionNorm = view.findViewById(R.id.emissionNorm);
-        vehicleAge = view.findViewById(R.id.vehicleAge);
+        manufacturingDate = view.findViewById(R.id.manufacturingDate);
         vehicleStatus = view.findViewById(R.id.vehicleStatus);
 
         // Cargar los recursos de marcas y logotipos
@@ -76,11 +71,9 @@ public class ResultFragment extends Fragment {
             String fuelStr = bundle.getString("fuelText");
             String bastidorStr = bundle.getString("Bastidor");
             String registeringAuthorityStr = bundle.getString("RegisteringAuthority");
-            String vehicleClassStr = bundle.getString("VehicleClass");
-            String fuelTypeStr = bundle.getString("FuelType");
             String emissionNormStr = bundle.getString("EmissionNorm");
-            String vehicleAgeStr = bundle.getString("VehicleAge");
-            String vehicleStatusStr = bundle.getString("VehicleStatus");
+            String manufacturingDateStr = bundle.getString("ManufacturingDate");
+            boolean vehicleStatusBool = bundle.getBoolean("VehicleStatus");
 
             carBrand.setText(carBrandStr);
             plateText.setText(plateStr);
@@ -90,11 +83,9 @@ public class ResultFragment extends Fragment {
 
             bastidor.setText(getString(R.string.bastidor) + ": " + bastidorStr);
             registeringAuthority.setText(getString(R.string.registering_authority) + ": " + registeringAuthorityStr);
-            vehicleClass.setText(getString(R.string.vehicle_class) + ": " + vehicleClassStr);
-            fuelType.setText(getString(R.string.fuel_type) + ": " + fuelTypeStr);
             emissionNorm.setText(getString(R.string.emission_norm) + ": " + emissionNormStr);
-            vehicleAge.setText(getString(R.string.vehicle_age) + ": " + vehicleAgeStr);
-            vehicleStatus.setText(getString(R.string.vehicle_status) + ": " + vehicleStatusStr);
+            manufacturingDate.setText(getString(R.string.manufacturing_date) + ": " + manufacturingDateStr);
+            vehicleStatus.setText(getString(R.string.vehicle_status) + ": " + (vehicleStatusBool ? getString(R.string.active) : getString(R.string.inactive)));
 
             // Buscar el logotipo de la marca del coche y establecerlo
             boolean logoFound = false;
@@ -119,23 +110,15 @@ public class ResultFragment extends Fragment {
             }
 
             // Manejar el botón de favoritos
-            favoriteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    isFavorite = !isFavorite;
-                    updateFavoriteButton();
-                    saveFavoriteStatus(plateStr, isFavorite);
-                }
+            favoriteButton.setOnClickListener(v -> {
+                isFavorite = !isFavorite;
+                updateFavoriteButton();
+                saveFavoriteStatus(plateStr, isFavorite);
             });
         }
 
         // Manejar el botón de retroceso
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getFragmentManager().popBackStack();
-            }
-        });
+        backButton.setOnClickListener(v -> getFragmentManager().popBackStack());
 
         return view;
     }
@@ -153,10 +136,10 @@ public class ResultFragment extends Fragment {
 
         if (isFavorite) {
             databaseReference.setValue(true);
-            Toast.makeText(getActivity(), "Añadido a favoritos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Added to favorites", Toast.LENGTH_SHORT).show();
         } else {
             databaseReference.removeValue();
-            Toast.makeText(getActivity(), "Eliminado de favoritos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Removed from favorites", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -175,7 +158,7 @@ public class ResultFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getActivity(), "Error al consultar el estado de favoritos", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Error checking favorite status", Toast.LENGTH_SHORT).show();
             }
         });
     }

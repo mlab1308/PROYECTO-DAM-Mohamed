@@ -1,4 +1,6 @@
+
 <resources>
+    <!-- Existing strings -->
     <string name="app_name">AutolabibScan</string>
     <string name="default_web_client">388872684081-9sgjsvqisrjvrju9uoqb6baa7rdkpf1t.apps.googleusercontent.com</string>
 
@@ -49,6 +51,15 @@
     <string name="select_image">Seleccionar Imagen</string>
     <string name="search_cars_hint">Buscar Coches...</string>
     <string name="license_plate">Matrícula:</string>
+    <string name="error_loading_image">Error al cargar la imagen</string>
+    <string name="plate_not_detected">Matrícula no detectada</string>
+    <string name="error_colon">Error: </string>
+    <string name="error_processing_image">Error al procesar la imagen</string>
+    <string name="error_creating_file">Error al crear el archivo</string>
+    <string name="no_plate_detected">Matrícula no detectada</string>
+    <string name="server_error">Error del servidor</string>
+    <string name="processing_error">Error al procesar la imagen</string>
+    <string name="api_call_failure">Error en la llamada a la API</string>
 
     <!-- Edit Profile Fragment -->
     <string name="back">Volver</string>
@@ -88,10 +99,9 @@
     <string name="additional_info">Información Adicional</string>
     <string name="bastidor">Bastidor</string>
     <string name="registering_authority">Autoridad de Registro</string>
-    <string name="vehicle_class">Clase de Vehículo</string>
     <string name="fuel_type">Tipo de Combustible</string>
     <string name="emission_norm">Norma de Emisión</string>
-    <string name="vehicle_age">Edad del Vehículo</string>
+    <string name="manufacturing_date">Fecha de Fabricación</string>
     <string name="vehicle_status">Estado del Vehículo</string>
     <string name="owners">Propietarios</string>
     <string name="power">Potencia</string>
@@ -99,5 +109,12 @@
     <string name="brand">Marca</string>
     <string name="plate">Matrícula</string>
 
+    <!-- Carousel and other additions -->
+    <string name="vehicle_age">Edad del Vehículo</string>
+    <string name="add_to_favorites">Añadido a favoritos</string>
+    <string name="remove_from_favorites">Eliminado de favoritos</string>
+    <string name="error_checking_favorites">Error al consultar el estado de favoritos</string>
+    <string name="active">Activo</string>
+    <string name="inactive">Inactivo</string>
 
 </resources>
