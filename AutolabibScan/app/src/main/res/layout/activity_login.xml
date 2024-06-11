@@ -190,21 +190,6 @@
                     android:background="@drawable/google"
                     android:contentDescription="@string/google_login" />
 
-                <ImageView
-                    android:id="@+id/btnFacebook"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_margin="8dp"
-                    android:src="@drawable/fb"
-                    android:contentDescription="@string/facebook_login" />
-
-                <ImageView
-                    android:id="@+id/btnTwitter"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_margin="8dp"
-                    android:src="@drawable/twitter"
-                    android:contentDescription="@string/twitter_login" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

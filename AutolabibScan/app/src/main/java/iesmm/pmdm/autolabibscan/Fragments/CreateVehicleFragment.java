@@ -1,31 +1,51 @@
 package iesmm.pmdm.autolabibscan.Fragments;
 
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
-import iesmm.pmdm.autolabibscan.Models.Vehicle;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
+
 import iesmm.pmdm.autolabibscan.R;
 
 public class CreateVehicleFragment extends Fragment {
 
-    private EditText etBrand, etPlate, etOwners, etPower, etFuel, etBastidor, etEmissionNorm, etRegisteringAuthority, etManufacturingDate, etImageUrl;
-    private Switch switchVehicleStatus;
-    private Button btnCreateVehicle;
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private EditText etBrand, etPlate, etOwners, etPower, etFuel, etBastidor, etEmissionNorm, etRegisteringAuthority, etManufacturingDate;
+    private SwitchCompat switchVehicleStatus;
+    private AppCompatButton btnCreateVehicle, btnSelectImage;
+    private Uri imageUri;
+    private Calendar calendar;
 
     @Nullable
     @Override
@@ -41,13 +61,61 @@ public class CreateVehicleFragment extends Fragment {
         etEmissionNorm = view.findViewById(R.id.et_emission_norm);
         etRegisteringAuthority = view.findViewById(R.id.et_registering_authority);
         etManufacturingDate = view.findViewById(R.id.et_manufacturing_date);
-        etImageUrl = view.findViewById(R.id.et_image_url);
+        btnSelectImage = view.findViewById(R.id.btn_select_image);
         switchVehicleStatus = view.findViewById(R.id.switch_vehicle_status);
         btnCreateVehicle = view.findViewById(R.id.btn_create_vehicle);
 
+        btnSelectImage.setOnClickListener(v -> openFileChooser());
         btnCreateVehicle.setOnClickListener(v -> createVehicle());
+        etManufacturingDate.setOnClickListener(v -> showDatePickerDialog());
 
+        calendar = Calendar.getInstance();
         return view;
+    }
+
+    private void showDatePickerDialog() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (view, year, month, dayOfMonth) -> {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.show();
+    }
+
+    private void updateLabel() {
+        String myFormat = "yyyy-MM-dd";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        etManufacturingDate.setText(sdf.format(calendar.getTime()));
+    }
+
+    private void openFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+            imageUri = data.getData();
+            updateSelectImageButtonState(true);
+        }
+    }
+
+    private void updateSelectImageButtonState(boolean isImageSelected) {
+        if (isImageSelected) {
+            btnSelectImage.setText(R.string.image_selected);
+            btnSelectImage.setBackgroundResource(R.drawable.btn_background_selected);
+            btnSelectImage.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_image_uploaded, 0, 0, 0);
+        } else {
+            btnSelectImage.setText(R.string.select_image);
+            btnSelectImage.setBackgroundResource(R.drawable.btn_background_1);
+            btnSelectImage.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_upload, 0, 0, 0);
+        }
     }
 
     private void createVehicle() {
@@ -60,38 +128,20 @@ public class CreateVehicleFragment extends Fragment {
         String emissionNorm = etEmissionNorm.getText().toString().trim();
         String registeringAuthority = etRegisteringAuthority.getText().toString().trim();
         String manufacturingDate = etManufacturingDate.getText().toString().trim();
-        String imageUrl = etImageUrl.getText().toString().trim();
         boolean vehicleStatus = switchVehicleStatus.isChecked();
 
-        if (!validateFields(brand, plate, owners, power, fuel, bastidor, emissionNorm, registeringAuthority, manufacturingDate, imageUrl)) {
+        if (!validateFields(brand, plate, owners, power, fuel, bastidor, emissionNorm, registeringAuthority, manufacturingDate)) {
             return;
         }
 
-        Vehicle vehicle = new Vehicle();
-        vehicle.setBrand(brand);
-        vehicle.setPlateText(plate);
-        vehicle.setOwners(Integer.parseInt(owners));
-        vehicle.setPower(power);
-        vehicle.setFuel(fuel);
-        vehicle.setBastidor(bastidor);
-        vehicle.setEmissionNorm(emissionNorm);
-        vehicle.setRegisteringAuthority(registeringAuthority);
-        vehicle.setManufacturingDate(manufacturingDate);
-        vehicle.setImageUrl(imageUrl);
-        vehicle.setVehicleStatus(vehicleStatus);
-
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("cars");
-        databaseReference.push().setValue(vehicle)
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(getContext(), R.string.vehicle_created_successfully, Toast.LENGTH_SHORT).show();
-                    navigateToDashboard();
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), R.string.failed_to_create_vehicle, Toast.LENGTH_SHORT).show();
-                });
+        if (imageUri != null) {
+            uploadImageAndSaveVehicle(brand, plate, owners, power, fuel, bastidor, emissionNorm, registeringAuthority, manufacturingDate, vehicleStatus);
+        } else {
+            Toast.makeText(getContext(), R.string.image_url_required, Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private boolean validateFields(String brand, String plate, String owners, String power, String fuel, String bastidor, String emissionNorm, String registeringAuthority, String manufacturingDate, String imageUrl) {
+    private boolean validateFields(String brand, String plate, String owners, String power, String fuel, String bastidor, String emissionNorm, String registeringAuthority, String manufacturingDate) {
         if (TextUtils.isEmpty(brand)) {
             etBrand.setError(getString(R.string.brand_required));
             return false;
@@ -139,16 +189,61 @@ public class CreateVehicleFragment extends Fragment {
             etManufacturingDate.setError(getString(R.string.manufacturing_date_required));
             return false;
         }
-        if (TextUtils.isEmpty(imageUrl)) {
-            etImageUrl.setError(getString(R.string.image_url_required));
-            return false;
-        }
         return true;
+    }
+
+    private void uploadImageAndSaveVehicle(String brand, String plate, String owners, String power, String fuel, String bastidor, String emissionNorm, String registeringAuthority, String manufacturingDate, boolean vehicleStatus) {
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("vehicle_images/" + UUID.randomUUID().toString());
+        storageReference.putFile(imageUri)
+                .addOnSuccessListener(taskSnapshot -> storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                    String imageUrl = uri.toString();
+                    saveVehicle(brand, plate, owners, power, fuel, bastidor, emissionNorm, registeringAuthority, manufacturingDate, vehicleStatus, imageUrl);
+                }))
+                .addOnFailureListener(e -> Toast.makeText(getContext(), R.string.failed_to_upload_image, Toast.LENGTH_SHORT).show());
+    }
+
+    private void saveVehicle(String brand, String plate, String owners, String power, String fuel, String bastidor, String emissionNorm, String registeringAuthority, String manufacturingDate, boolean vehicleStatus, String imageUrl) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("cars");
+        String key = databaseReference.push().getKey();
+
+        Map<String, Object> vehicleData = new HashMap<>();
+        vehicleData.put("brand", brand);
+        vehicleData.put("plateText", plate);
+        vehicleData.put("owners", Integer.parseInt(owners));
+        vehicleData.put("power", power);
+        vehicleData.put("fuel", fuel);
+        vehicleData.put("vehicleStatus", vehicleStatus);
+        vehicleData.put("imageUrl", imageUrl);
+
+        Map<String, Object> infoData = new HashMap<>();
+        infoData.put("Bastidor", bastidor);
+        infoData.put("EmissionNorm", emissionNorm);
+        infoData.put("RegisteringAuthority", registeringAuthority);
+        infoData.put("ManufacturingDate", manufacturingDate);
+
+        Map<String, Object> finalData = new HashMap<>();
+        finalData.put("brand", brand);
+        finalData.put("plateText", plate);
+        finalData.put("owners", Integer.parseInt(owners));
+        finalData.put("power", power);
+        finalData.put("fuel", fuel);
+        finalData.put("vehicleStatus", vehicleStatus);
+        finalData.put("imageUrl", imageUrl);
+        finalData.put("info", infoData);
+
+        if (key != null) {
+            databaseReference.child(key).setValue(finalData)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(getContext(), R.string.vehicle_created_successfully, Toast.LENGTH_SHORT).show();
+                        navigateToDashboard();
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(getContext(), R.string.failed_to_create_vehicle, Toast.LENGTH_SHORT).show());
+        }
     }
 
     private void navigateToDashboard() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, new DashboardFragment());
+        transaction.replace(R.id.admin_fragment_container, new DashboardFragment());
         transaction.addToBackStack(null);
         transaction.commit();
     }

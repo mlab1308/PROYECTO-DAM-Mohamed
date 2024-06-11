@@ -21,7 +21,9 @@
     <string name="google_login">Iniciar sesión con Google</string>
     <string name="facebook_login">Iniciar sesión con Facebook</string>
     <string name="twitter_login">Iniciar sesión con Twitter</string>
-
+    <string name="reset_password_email_sent">Correo de restablecimiento de contraseña enviado.</string>
+    <string name="reset_password_email_failed">Error al enviar el correo de restablecimiento.</string>
+    <string name="email_required">Email es requerido.</string>
     <!-- Register activity -->
     <string name="first_name_hint">Nombre</string>
     <string name="last_name_hint">Apellido</string>
@@ -117,6 +119,7 @@
     <string name="inactive">Inactivo</string>
 
     <!--Create car-->
+    <string name="create_vehicle">Añadir Vehiculo</string>
     <string name="vehicle_created_successfully">Vehículo creado con éxito</string>
     <string name="failed_to_create_vehicle">Error al crear el vehículo</string>
     <string name="brand_required">La marca es obligatoria</string>
@@ -131,7 +134,7 @@
     <string name="registering_authority_required">La autoridad de registro es obligatoria</string>
     <string name="manufacturing_date_required">La fecha de fabricación es obligatoria</string>
     <string name="image_url_required">La URL de la imagen es obligatoria</string>
-
+    <string name="failed_to_upload_image">No se ha podido subir la imagen</string>
     <!--nav drawer-->
     <string name="nav_home">Inicio</string>
     <string name="nav_favorites">Favoritos</string>
@@ -141,4 +144,6 @@
     <string name="nav_logout">Cerrar Sesión</string>
     <string name="navigation_drawer_open">Abrir menú de navegación</string>
     <string name="navigation_drawer_close">Cerrar menú de navegación</string>
+    <string name="image_not_selected">Imagen no seleccionada</string>
+    <string name="image_selected">Imagen seleccionada</string>
 </resources>

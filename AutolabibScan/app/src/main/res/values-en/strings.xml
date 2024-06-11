@@ -20,7 +20,9 @@
     <string name="google_login">Log in with Google</string>
     <string name="facebook_login">Log in with Facebook</string>
     <string name="twitter_login">Log in with Twitter</string>
-
+    <string name="reset_password_email_sent">Password reset email sent.</string>
+    <string name="reset_password_email_failed">Error sending password reset email.</string>
+    <string name="email_required">Email is required to reset password.</string>
     <!-- Register activity -->
     <string name="first_name_hint">First Name</string>
     <string name="last_name_hint">Last Name</string>
@@ -117,6 +119,7 @@
     <string name="inactive">Inactive</string>
 
     <!--CReate car-->
+    <string name="create_vehicle">Create Vehicle</string>
     <string name="vehicle_created_successfully">Vehicle created successfully</string>
     <string name="failed_to_create_vehicle">Failed to create vehicle</string>
     <string name="brand_required">Brand is required</string>
@@ -131,6 +134,9 @@
     <string name="registering_authority_required">Registering Authority is required</string>
     <string name="manufacturing_date_required">Manufacturing Date is required</string>
     <string name="image_url_required">Image is required</string>
+    <string name="failed_to_upload_image">Failed to upload image</string>
+    <string name="image_not_selected">Imagen not selected</string>
+    <string name="image_selected">Image selected</string>
 
     <!--nav drawer-->
     <string name="nav_home">Home</string>

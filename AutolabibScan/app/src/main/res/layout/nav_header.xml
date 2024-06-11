@@ -1,0 +1,32 @@
+<!-- res/layout/nav_header.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/nav_header_background"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/imageViewAdminProfile"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_profile_default" />
+
+    <TextView
+        android:id="@+id/textViewAdminName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="Admin Name"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/textViewAdminEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="admin@example.com"
+        android:textColor="@android:color/white" />
+</LinearLayout>

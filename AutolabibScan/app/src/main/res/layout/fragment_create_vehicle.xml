@@ -6,89 +6,157 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@android:color/white">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create Vehicle"
+            android:text="@string/create_vehicle"
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp"
+            android:textColor="@android:color/black"/>
 
         <EditText
             android:id="@+id/et_brand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Brand"/>
+            android:hint="@string/brand"
+            android:background="@drawable/edittext_background"
+            android:padding="12dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:layout_marginBottom="12dp"/>
 
         <EditText
             android:id="@+id/et_plate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Plate Number"/>
+            android:hint="@string/plate"
+            android:background="@drawable/edittext_background"
+            android:padding="12dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:layout_marginBottom="12dp"/>
 
         <EditText
             android:id="@+id/et_owners"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Owners"/>
+            android:hint="@string/owners"
+            android:background="@drawable/edittext_background"
+            android:padding="12dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:layout_marginBottom="12dp"/>
 
         <EditText
             android:id="@+id/et_power"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Power"/>
+            android:hint="@string/power"
+            android:background="@drawable/edittext_background"
+            android:padding="12dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:layout_marginBottom="12dp"/>
 
         <EditText
             android:id="@+id/et_fuel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Fuel"/>
+            android:hint="@string/fuel"
+            android:background="@drawable/edittext_background"
+            android:padding="12dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:layout_marginBottom="12dp"/>
 
         <EditText
             android:id="@+id/et_bastidor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Chassis (Bastidor)"/>
+            android:hint="@string/bastidor"
+            android:background="@drawable/edittext_background"
+            android:padding="12dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:layout_marginBottom="12dp"/>
 
         <EditText
             android:id="@+id/et_emission_norm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Emission Norm"/>
+            android:hint="@string/emission_norm"
+            android:background="@drawable/edittext_background"
+            android:padding="12dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:layout_marginBottom="12dp"/>
 
         <EditText
             android:id="@+id/et_registering_authority"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Registering Authority"/>
+            android:hint="@string/registering_authority"
+            android:background="@drawable/edittext_background"
+            android:padding="12dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:layout_marginBottom="12dp"/>
 
         <EditText
             android:id="@+id/et_manufacturing_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Manufacturing Date"/>
+            android:hint="@string/manufacturing_date"
+            android:background="@drawable/edittext_background"
+            android:padding="12dp"
+            android:focusable="false"
+            android:clickable="true"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:layout_marginBottom="12dp"/>
 
-        <EditText
-            android:id="@+id/et_image_url"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Image URL"/>
-
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switch_vehicle_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Vehicle Status"/>
+            android:text="@string/vehicle_status"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="12dp"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_select_image"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/btn_background_1"
+            android:drawableStart="@drawable/ic_upload"
+            android:drawablePadding="20dp"
+            android:paddingStart="20dp"
+            android:text="@string/select_image"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            style="@android:style/Widget.Button"
+            android:textAlignment="center" />
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_create_vehicle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Create Vehicle"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"/>
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/btn_background_1"
+            android:drawableStart="@drawable/ic_create_car"
+            android:drawablePadding="20dp"
+            android:paddingStart="20dp"
+            android:text="@string/create_vehicle"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            style="@android:style/Widget.Button"
+            android:textAlignment="center"/>
     </LinearLayout>
 </ScrollView>

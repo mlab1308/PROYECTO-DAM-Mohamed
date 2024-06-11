@@ -1,0 +1,12 @@
+<!-- res/drawable/nav_header_background.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="90"
+                android:startColor="#071B50"
+                android:endColor="#0A2472"
+                android:type="linear" />
+        </shape>
+    </item>
+</layer-list>
