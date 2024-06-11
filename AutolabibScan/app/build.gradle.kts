@@ -80,6 +80,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    //FIREBASE
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
@@ -89,6 +90,8 @@ dependencies {
     implementation ("com.google.firebase:firebase-storage")
     implementation ("com.github.bumptech.glide:glide:4.13.0")
     implementation ("de.hdodenhof:circleimageview:3.1.0")
+
+
     //Conexion a la api de imagenes
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")

@@ -100,8 +100,11 @@ public class AdminDashboardActivity extends AppCompatActivity implements Navigat
         }
 
         if (selectedFragment != null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.admin_fragment_container, selectedFragment).commit();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.admin_fragment_container, selectedFragment)
+                    .commit();
         }
+
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

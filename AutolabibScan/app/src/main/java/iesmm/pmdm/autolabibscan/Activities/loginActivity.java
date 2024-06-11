@@ -48,7 +48,7 @@ public class loginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private GoogleSignInClient mGoogleSignInClient;
-    private TextView txtRegisterRedirect;
+    private TextView txtRegisterRedirect,forgotPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +66,7 @@ public class loginActivity extends AppCompatActivity {
             edtEmail = findViewById(R.id.edtEmail);
             edtPassword = findViewById(R.id.edtPassword);
             txtRegisterRedirect = findViewById(R.id.txtRegisterRedirect);
-
+            forgotPass = findViewById(R.id.forgotpass);
             // Acción onClick para redirigir al registro
             txtRegisterRedirect.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -77,6 +77,18 @@ public class loginActivity extends AppCompatActivity {
                 }
             });
 
+            // Configuración del Listener para el enlace de "Forgot Password"
+            forgotPass.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String email = edtEmail.getText().toString().trim();
+                    if (email.isEmpty()) {
+                        Toast.makeText(loginActivity.this, getString(R.string.email_required), Toast.LENGTH_SHORT).show();
+                    } else {
+                        resetPassword(email);
+                    }
+                }
+            });
             // Configuración de Google Sign-In
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(getString(R.string.default_web_client))
@@ -141,6 +153,20 @@ public class loginActivity extends AppCompatActivity {
             }
         }
     }
+    private void resetPassword(String email) {
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(loginActivity.this, getString(R.string.reset_password_email_sent), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(loginActivity.this, getString(R.string.reset_password_email_failed), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
 
     // Método para autenticar con Firebase usando Google
     private void firebaseAuthWithGoogle(String idToken) {

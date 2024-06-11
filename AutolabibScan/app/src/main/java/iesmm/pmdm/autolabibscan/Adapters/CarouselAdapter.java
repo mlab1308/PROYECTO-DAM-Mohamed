@@ -24,6 +24,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
+import iesmm.pmdm.autolabibscan.Activities.AdminDashboardActivity;
+import iesmm.pmdm.autolabibscan.Activities.UserDashboardActivity;
 import iesmm.pmdm.autolabibscan.Fragments.ResultFragment;
 import iesmm.pmdm.autolabibscan.Models.Vehicle;
 import iesmm.pmdm.autolabibscan.R;
@@ -139,7 +141,14 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
                         resultFragment.setArguments(bundle);
 
                         FragmentTransaction transaction = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.fragment_container, resultFragment);
+
+                        // Verificar la instancia de context y usar el contenedor adecuado
+                        if (context instanceof AdminDashboardActivity) {
+                            transaction.replace(R.id.admin_fragment_container, resultFragment);
+                        } else if (context instanceof UserDashboardActivity) {
+                            transaction.replace(R.id.fragment_container, resultFragment);
+                        }
+
                         transaction.addToBackStack(null);
                         transaction.commit();
                     }

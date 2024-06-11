@@ -26,6 +26,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
+import iesmm.pmdm.autolabibscan.Activities.AdminDashboardActivity;
+import iesmm.pmdm.autolabibscan.Activities.UserDashboardActivity;
 import iesmm.pmdm.autolabibscan.Fragments.ResultFragment;
 import iesmm.pmdm.autolabibscan.R;
 
@@ -103,20 +105,20 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot vehicleSnapshot : dataSnapshot.getChildren()) {
                         String carBrand = vehicleSnapshot.child("brand").getValue(String.class);
-                        int owners = vehicleSnapshot.child("owners").getValue(Integer.class); // Actualizado para obtener Integer
+                        int owners = vehicleSnapshot.child("owners").getValue(Integer.class);
                         String powerText = vehicleSnapshot.child("power").getValue(String.class);
                         String fuelText = vehicleSnapshot.child("fuel").getValue(String.class);
                         String bastidor = vehicleSnapshot.child("info").child("Bastidor").getValue(String.class);
                         String emissionNorm = vehicleSnapshot.child("info").child("EmissionNorm").getValue(String.class);
                         String registeringAuthority = vehicleSnapshot.child("info").child("RegisteringAuthority").getValue(String.class);
                         String manufacturingDate = vehicleSnapshot.child("info").child("ManufacturingDate").getValue(String.class);
-                        boolean vehicleStatus = vehicleSnapshot.child("vehicleStatus").getValue(Boolean.class); // Actualizado para obtener Boolean
+                        boolean vehicleStatus = vehicleSnapshot.child("vehicleStatus").getValue(Boolean.class);
                         String imageUrl = vehicleSnapshot.child("imageUrl").getValue(String.class);
 
                         Bundle bundle = new Bundle();
                         bundle.putString("carBrand", carBrand);
                         bundle.putString("plateText", plateText.toUpperCase());
-                        bundle.putString("ownersText", owners + " Owners"); // Concatenar " Owners"
+                        bundle.putString("ownersText", owners + " Owners");
                         bundle.putString("powerText", powerText);
                         bundle.putString("fuelText", fuelText);
                         bundle.putString("Bastidor", bastidor);
@@ -130,7 +132,14 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
                         resultFragment.setArguments(bundle);
 
                         FragmentTransaction transaction = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.fragment_container, resultFragment);
+
+                        // Verificar la instancia de context y usar el contenedor adecuado
+                        if (context instanceof AdminDashboardActivity) {
+                            transaction.replace(R.id.admin_fragment_container, resultFragment);
+                        } else if (context instanceof UserDashboardActivity) {
+                            transaction.replace(R.id.fragment_container, resultFragment);
+                        }
+
                         transaction.addToBackStack(null);
                         transaction.commit();
                     }
@@ -145,7 +154,6 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
             }
         });
     }
-
 
     // ViewHolder para cada elemento de la lista
     static class FavoriteViewHolder extends RecyclerView.ViewHolder {
