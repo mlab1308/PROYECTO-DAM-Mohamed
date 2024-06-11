@@ -100,7 +100,7 @@ public class welcomeActivity extends AppCompatActivity {
                             redirectToDashboard("user");
                         }
                     } else {
-                        userRef.setValue(new User("", emailUser, "user"));
+                        userRef.setValue(new User("","", emailUser, "user"));
                         redirectToDashboard("user");
                     }
                 }
