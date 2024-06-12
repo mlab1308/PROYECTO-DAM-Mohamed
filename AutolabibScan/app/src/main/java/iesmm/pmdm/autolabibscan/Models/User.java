@@ -2,6 +2,7 @@ package iesmm.pmdm.autolabibscan.Models;
 
 public class User {
     public String name;
+    public String lastName;
     public String email;
     public String role;
     public String profileImageUrl;
@@ -10,17 +11,19 @@ public class User {
         // Constructor vacío requerido para Firebase
     }
 
-    public User(String name, String email, String role, String profileImageUrl) {
-        this.name = name;
+    public User(String Name, String lastName, String email, String role, String profileImageUrl) {
+        this.name = Name;
+        this.lastName = lastName;
         this.email = email;
         this.role = role;
         this.profileImageUrl = profileImageUrl;
     }
 
-    public User(String name,String email, String role) {
+    public User(String Name, String lastName, String email, String role) {
+        this.name = Name;
+        this.lastName = lastName;
         this.email = email;
         this.role = role;
-        this.profileImageUrl = profileImageUrl;
     }
 
     public String getName() {
@@ -29,6 +32,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {

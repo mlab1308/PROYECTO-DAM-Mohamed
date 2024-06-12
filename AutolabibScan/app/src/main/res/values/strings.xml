@@ -24,12 +24,21 @@
     <string name="reset_password_email_sent">Correo de restablecimiento de contraseña enviado.</string>
     <string name="reset_password_email_failed">Error al enviar el correo de restablecimiento.</string>
     <string name="email_required">Email es requerido.</string>
+    <string name="invalid_email_format">Formato de correo electrónico no válido.</string>
+    <string name="loading">Cargando...</string>
+
+
     <!-- Register activity -->
     <string name="first_name_hint">Nombre</string>
     <string name="last_name_hint">Apellido</string>
     <string name="confirm_password_hint">Confirmar Contraseña</string>
     <string name="register">Registrarse</string>
     <string name="login_redirect">¿Ya tienes una cuenta? Inicia sesión</string>
+    <string name="first_name_required">Se requiere el nombre.</string>
+    <string name="last_name_required">Se requiere el apellido.</string>
+    <string name="password_required">Se requiere la contraseña.</string>
+    <string name="password_length_error">La contraseña debe tener al menos 6 caracteres.</string>
+
 
     <!-- Toast messages -->
     <string name="register_success">Registro exitoso</string>

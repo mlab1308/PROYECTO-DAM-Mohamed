@@ -113,7 +113,7 @@ public class ProfileFragment extends Fragment {
                     User user = snapshot.getValue(User.class);
                     if (user != null) {
                         // Configurar los valores de las vistas con los datos del usuario
-                        profileName.setText(user.getName());
+                        profileName.setText(user.getName() + " " + user.getLastName());
                         profileEmail.setText(user.getEmail());
                         // Cargar la imagen de perfil si existe, de lo contrario, cargar una imagen por defecto
                         if (user.getProfileImageUrl() != null && !user.getProfileImageUrl().isEmpty()) {

@@ -22,13 +22,22 @@
     <string name="twitter_login">Log in with Twitter</string>
     <string name="reset_password_email_sent">Password reset email sent.</string>
     <string name="reset_password_email_failed">Error sending password reset email.</string>
-    <string name="email_required">Email is required to reset password.</string>
+    <string name="loading">Loading...</string>
+
+
     <!-- Register activity -->
     <string name="first_name_hint">First Name</string>
     <string name="last_name_hint">Last Name</string>
     <string name="confirm_password_hint">Confirm Password</string>
     <string name="register">Register</string>
     <string name="login_redirect">Already have an account? Log In</string>
+    <string name="first_name_required">First name is required.</string>
+    <string name="last_name_required">Last name is required.</string>
+    <string name="email_required">Email is required.</string>
+    <string name="invalid_email_format">Invalid email format.</string>
+    <string name="password_required">Password is required.</string>
+    <string name="password_length_error">Password must be at least 6 characters long.</string>
+
 
     <!-- Toast messages -->
     <string name="register_success">Registration successful</string>
