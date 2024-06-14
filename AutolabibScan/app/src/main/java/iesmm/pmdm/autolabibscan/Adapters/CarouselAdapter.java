@@ -32,14 +32,18 @@ import iesmm.pmdm.autolabibscan.R;
 
 public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder> {
 
+    // Contexto de la actividad o fragmento que usa el adaptador
     private Context context;
+    // Lista de vehículos a mostrar en el carrusel
     private List<Vehicle> vehicleList;
 
+    // Constructor del adaptador que recibe el contexto y la lista de vehículos
     public CarouselAdapter(Context context, List<Vehicle> vehicleList) {
         this.context = context;
         this.vehicleList = vehicleList;
     }
 
+    // Inflar el layout para cada ítem del carrusel y crear el ViewHolder
     @NonNull
     @Override
     public CarouselViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -47,17 +51,20 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
         return new CarouselViewHolder(view);
     }
 
+    // Vincular los datos del vehículo con las vistas del ViewHolder
     @Override
     public void onBindViewHolder(@NonNull CarouselViewHolder holder, int position) {
         Vehicle vehicle = vehicleList.get(position);
         holder.bind(vehicle);
     }
 
+    // Obtener el número total de ítems en la lista de vehículos
     @Override
     public int getItemCount() {
         return vehicleList.size();
     }
 
+    // Clase ViewHolder para representar los elementos del RecyclerView
     class CarouselViewHolder extends RecyclerView.ViewHolder {
         TextView brandTextView;
         TextView plateTextView;
@@ -65,15 +72,17 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
         TextView fuelTypeTextView;
         ImageView vehicleImageView;
 
+        // Constructor del ViewHolder
         CarouselViewHolder(View itemView) {
             super(itemView);
+            // Referenciar las vistas del layout
             brandTextView = itemView.findViewById(R.id.brandTextView);
             plateTextView = itemView.findViewById(R.id.plateTextView);
             powerTextView = itemView.findViewById(R.id.powerTextView);
             fuelTypeTextView = itemView.findViewById(R.id.fuelTypeTextView);
             vehicleImageView = itemView.findViewById(R.id.vehicleImageView);
 
-            // Set onClick listener
+            // Configurar el listener de clic en el ítem del carrusel
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 Vehicle vehicle = vehicleList.get(position);
@@ -81,6 +90,7 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
             });
         }
 
+        // Método para vincular los datos del vehículo a las vistas
         void bind(final Vehicle vehicle) {
             brandTextView.setText(vehicle.getBrand());
             plateTextView.setText(vehicle.getPlateText());
@@ -124,6 +134,7 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
                         boolean vehicleStatus = vehicleSnapshot.child("vehicleStatus").getValue(Boolean.class);
                         String imageUrl = vehicleSnapshot.child("imageUrl").getValue(String.class);
 
+                        // Crear un Bundle para pasar los datos al fragmento de resultados
                         Bundle bundle = new Bundle();
                         bundle.putString("carBrand", carBrand);
                         bundle.putString("plateText", plateText.toUpperCase());
@@ -137,9 +148,11 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
                         bundle.putBoolean("VehicleStatus", vehicleStatus);
                         bundle.putString("ImageUrl", imageUrl);
 
+                        // Crear una instancia del fragmento de resultados y establecer los argumentos
                         ResultFragment resultFragment = new ResultFragment();
                         resultFragment.setArguments(bundle);
 
+                        // Iniciar una transacción de fragmento
                         FragmentTransaction transaction = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
 
                         // Verificar la instancia de context y usar el contenedor adecuado
@@ -153,12 +166,14 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
                         transaction.commit();
                     }
                 } else {
+                    // Mostrar un mensaje si no se encuentran datos
                     Toast.makeText(context, R.string.no_data_found, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Mostrar un mensaje de error si la consulta a la base de datos falla
                 Toast.makeText(context, R.string.db_query_error, Toast.LENGTH_SHORT).show();
             }
         });
