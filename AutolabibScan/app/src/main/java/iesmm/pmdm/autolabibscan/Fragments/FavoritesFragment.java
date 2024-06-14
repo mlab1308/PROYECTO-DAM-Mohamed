@@ -28,6 +28,7 @@ import iesmm.pmdm.autolabibscan.R;
 
 public class FavoritesFragment extends Fragment {
 
+    // Declaración de variables para la interfaz de usuario y Firebase
     private RecyclerView recyclerViewFavorites;
     private FavoritesAdapter adapter;
     private List<String> favoritePlates;
@@ -36,17 +37,22 @@ public class FavoritesFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Inflar el layout del fragmento
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
 
+        // Inicializar las vistas del layout
         recyclerViewFavorites = view.findViewById(R.id.recyclerViewFavorites);
         noFavoritesTextView = view.findViewById(R.id.noFavoritesTextView);
 
+        // Configurar el RecyclerView
         setupRecyclerView();
+        // Cargar las matrículas de los vehículos favoritos
         loadFavoritePlates();
 
         return view;
     }
 
+    // Método para configurar el RecyclerView
     private void setupRecyclerView() {
         favoritePlates = new ArrayList<>();
         adapter = new FavoritesAdapter(getContext(), favoritePlates);
@@ -54,6 +60,7 @@ public class FavoritesFragment extends Fragment {
         recyclerViewFavorites.setAdapter(adapter);
     }
 
+    // Método para cargar las matrículas de los vehículos favoritos desde Firebase
     private void loadFavoritePlates() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
@@ -63,11 +70,14 @@ public class FavoritesFragment extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     favoritePlates.clear();
+                    // Iterar sobre los datos obtenidos de Firebase
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         String plate = snapshot.getKey();
                         favoritePlates.add(plate);
                     }
+                    // Notificar al adaptador de los cambios en los datos
                     adapter.notifyDataSetChanged();
+                    // Verificar si no hay favoritos y actualizar la interfaz de usuario
                     checkIfNoFavorites();
                 }
 
@@ -79,6 +89,7 @@ public class FavoritesFragment extends Fragment {
         }
     }
 
+    // Método para verificar si no hay favoritos y actualizar la interfaz de usuario
     private void checkIfNoFavorites() {
         if (favoritePlates.isEmpty()) {
             recyclerViewFavorites.setVisibility(View.GONE);

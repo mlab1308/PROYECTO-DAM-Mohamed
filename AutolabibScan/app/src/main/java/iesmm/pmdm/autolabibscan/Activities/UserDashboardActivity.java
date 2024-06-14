@@ -1,4 +1,3 @@
-
 package iesmm.pmdm.autolabibscan.Activities;
 
 import android.content.Intent;
@@ -9,7 +8,6 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import iesmm.pmdm.autolabibscan.Fragments.DashboardFragment;
 import iesmm.pmdm.autolabibscan.Fragments.FavoritesFragment;
@@ -26,17 +24,17 @@ public class UserDashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_dashboard);
 
-        // Initialize Firebase Auth
+        // Inicializar Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        // Check if user is authenticated
+        // Comprobar si el usuario está autenticado
         if (mAuth.getCurrentUser() == null) {
-            redirectToLogin();
+            redirigirAlLogin();
             return;
         }
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        setupBottomNavigation();
+        configurarNavegaciónInferior();
 
         // Cargar DashboardFragment por defecto
         getSupportFragmentManager().beginTransaction()
@@ -44,13 +42,15 @@ public class UserDashboardActivity extends AppCompatActivity {
                 .commit();
     }
 
-    private void redirectToLogin() {
+    // Método para redirigir al usuario a la pantalla de inicio de sesión
+    private void redirigirAlLogin() {
         Intent intent = new Intent(this, loginActivity.class);
         startActivity(intent);
         finish();
     }
 
-    private void setupBottomNavigation() {
+    // Método para configurar la navegación inferior
+    private void configurarNavegaciónInferior() {
         bottomNavigationView.inflateMenu(R.menu.bottom_navigation_menu);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment fragment = null;

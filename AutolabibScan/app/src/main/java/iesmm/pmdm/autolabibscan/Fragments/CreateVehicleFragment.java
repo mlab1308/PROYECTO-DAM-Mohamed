@@ -50,8 +50,10 @@ public class CreateVehicleFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Inflar el layout del fragmento
         View view = inflater.inflate(R.layout.fragment_create_vehicle, container, false);
 
+        // Inicializar los elementos de la interfaz de usuario
         etBrand = view.findViewById(R.id.et_brand);
         etPlate = view.findViewById(R.id.et_plate);
         etOwners = view.findViewById(R.id.et_owners);
@@ -65,14 +67,17 @@ public class CreateVehicleFragment extends Fragment {
         switchVehicleStatus = view.findViewById(R.id.switch_vehicle_status);
         btnCreateVehicle = view.findViewById(R.id.btn_create_vehicle);
 
+        // Configurar los listeners de los botones
         btnSelectImage.setOnClickListener(v -> openFileChooser());
         btnCreateVehicle.setOnClickListener(v -> createVehicle());
         etManufacturingDate.setOnClickListener(v -> showDatePickerDialog());
 
+        // Inicializar el calendario
         calendar = Calendar.getInstance();
         return view;
     }
 
+    // Método para mostrar el selector de fecha
     private void showDatePickerDialog() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (view, year, month, dayOfMonth) -> {
             calendar.set(Calendar.YEAR, year);
@@ -83,12 +88,14 @@ public class CreateVehicleFragment extends Fragment {
         datePickerDialog.show();
     }
 
+    // Método para actualizar la etiqueta de la fecha
     private void updateLabel() {
         String myFormat = "yyyy-MM-dd";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         etManufacturingDate.setText(sdf.format(calendar.getTime()));
     }
 
+    // Método para abrir el selector de archivos para elegir una imagen
     private void openFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -96,6 +103,7 @@ public class CreateVehicleFragment extends Fragment {
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
+    // Método para manejar el resultado de la actividad de selección de archivos
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -106,6 +114,7 @@ public class CreateVehicleFragment extends Fragment {
         }
     }
 
+    // Método para actualizar el estado del botón de selección de imagen
     private void updateSelectImageButtonState(boolean isImageSelected) {
         if (isImageSelected) {
             btnSelectImage.setText(R.string.image_selected);
@@ -118,6 +127,7 @@ public class CreateVehicleFragment extends Fragment {
         }
     }
 
+    // Método para crear un nuevo vehículo
     private void createVehicle() {
         String brand = etBrand.getText().toString().trim();
         String plate = etPlate.getText().toString().trim();
@@ -130,10 +140,12 @@ public class CreateVehicleFragment extends Fragment {
         String manufacturingDate = etManufacturingDate.getText().toString().trim();
         boolean vehicleStatus = switchVehicleStatus.isChecked();
 
+        // Validar los campos
         if (!validateFields(brand, plate, owners, power, fuel, bastidor, emissionNorm, registeringAuthority, manufacturingDate)) {
             return;
         }
 
+        // Subir la imagen y guardar el vehículo si la imagen está seleccionada
         if (imageUri != null) {
             uploadImageAndSaveVehicle(brand, plate, owners, power, fuel, bastidor, emissionNorm, registeringAuthority, manufacturingDate, vehicleStatus);
         } else {
@@ -141,6 +153,7 @@ public class CreateVehicleFragment extends Fragment {
         }
     }
 
+    // Método para validar los campos
     private boolean validateFields(String brand, String plate, String owners, String power, String fuel, String bastidor, String emissionNorm, String registeringAuthority, String manufacturingDate) {
         if (TextUtils.isEmpty(brand)) {
             etBrand.setError(getString(R.string.brand_required));
@@ -192,6 +205,7 @@ public class CreateVehicleFragment extends Fragment {
         return true;
     }
 
+    // Método para subir la imagen y guardar el vehículo
     private void uploadImageAndSaveVehicle(String brand, String plate, String owners, String power, String fuel, String bastidor, String emissionNorm, String registeringAuthority, String manufacturingDate, boolean vehicleStatus) {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference("vehicle_images/" + UUID.randomUUID().toString());
         storageReference.putFile(imageUri)
@@ -202,10 +216,12 @@ public class CreateVehicleFragment extends Fragment {
                 .addOnFailureListener(e -> Toast.makeText(getContext(), R.string.failed_to_upload_image, Toast.LENGTH_SHORT).show());
     }
 
+    // Método para guardar el vehículo en la base de datos
     private void saveVehicle(String brand, String plate, String owners, String power, String fuel, String bastidor, String emissionNorm, String registeringAuthority, String manufacturingDate, boolean vehicleStatus, String imageUrl) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("cars");
         String key = databaseReference.push().getKey();
 
+        // Crear un mapa con los datos del vehículo
         Map<String, Object> vehicleData = new HashMap<>();
         vehicleData.put("brand", brand);
         vehicleData.put("plateText", plate);
@@ -215,12 +231,14 @@ public class CreateVehicleFragment extends Fragment {
         vehicleData.put("vehicleStatus", vehicleStatus);
         vehicleData.put("imageUrl", imageUrl);
 
+        // Crear un mapa con la información adicional del vehículo
         Map<String, Object> infoData = new HashMap<>();
         infoData.put("Bastidor", bastidor);
         infoData.put("EmissionNorm", emissionNorm);
         infoData.put("RegisteringAuthority", registeringAuthority);
         infoData.put("ManufacturingDate", manufacturingDate);
 
+        // Crear un mapa final que combine los datos del vehículo y la información adicional
         Map<String, Object> finalData = new HashMap<>();
         finalData.put("brand", brand);
         finalData.put("plateText", plate);
@@ -231,6 +249,7 @@ public class CreateVehicleFragment extends Fragment {
         finalData.put("imageUrl", imageUrl);
         finalData.put("info", infoData);
 
+        // Guardar los datos en la base de datos si la clave no es nula
         if (key != null) {
             databaseReference.child(key).setValue(finalData)
                     .addOnSuccessListener(aVoid -> {
@@ -241,6 +260,7 @@ public class CreateVehicleFragment extends Fragment {
         }
     }
 
+    // Método para navegar al Dashboard
     private void navigateToDashboard() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.admin_fragment_container, new DashboardFragment());

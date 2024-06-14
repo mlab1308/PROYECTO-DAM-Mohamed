@@ -47,7 +47,7 @@ public class AdminDashboardActivity extends AppCompatActivity implements Navigat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_dashboard);
 
-        // Set up the toolbar
+        // Configurar la barra de herramientas
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -59,13 +59,13 @@ public class AdminDashboardActivity extends AppCompatActivity implements Navigat
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        // Inflate the header view and get references to the views
+        // Inflar la vista del encabezado y obtener referencias a las vistas
         View headerView = navigationView.getHeaderView(0);
         textViewAdminName = headerView.findViewById(R.id.textViewAdminName);
         textViewAdminEmail = headerView.findViewById(R.id.textViewAdminEmail);
         imageViewAdminProfile = headerView.findViewById(R.id.imageViewAdminProfile);
 
-        // Initialize Firebase Auth
+        // Inicializar Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
@@ -73,10 +73,10 @@ public class AdminDashboardActivity extends AppCompatActivity implements Navigat
             userRef = FirebaseDatabase.getInstance().getReference().child("users").child(currentUser.getUid());
             loadAdminData();
         } else {
-            // Handle the case where currentUser is null
+            // Manejar el caso donde currentUser es null
         }
 
-        // Load default fragment
+        // Cargar el fragmento por defecto
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.admin_fragment_container, new DashboardFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
@@ -105,7 +105,6 @@ public class AdminDashboardActivity extends AppCompatActivity implements Navigat
                     .commit();
         }
 
-
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -132,6 +131,7 @@ public class AdminDashboardActivity extends AppCompatActivity implements Navigat
         return super.onOptionsItemSelected(item);
     }
 
+    // Método para cargar los datos del administrador desde Firebase
     private void loadAdminData() {
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -142,7 +142,7 @@ public class AdminDashboardActivity extends AppCompatActivity implements Navigat
                         textViewAdminName.setText(user.getName());
                         textViewAdminEmail.setText(user.getEmail());
 
-                        // Load profile image if exists, otherwise load default image
+                        // Cargar la imagen de perfil si existe, de lo contrario, cargar la imagen por defecto
                         if (user.getProfileImageUrl() != null && !user.getProfileImageUrl().isEmpty()) {
                             Glide.with(AdminDashboardActivity.this)
                                     .load(user.getProfileImageUrl())
