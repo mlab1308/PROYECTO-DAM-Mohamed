@@ -61,7 +61,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/name"
+                android:textColor="@color/black"
                 android:layout_marginBottom="16dp"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:background="@drawable/edittext_background"/>
+            <EditText
+                android:id="@+id/editTextLastName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/last_name_hint"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/black"
                 android:padding="10dp"
                 android:textSize="18sp"
                 android:background="@drawable/edittext_background"/>
@@ -71,6 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
+                android:textColor="@color/black"
                 android:layout_marginBottom="16dp"
                 android:padding="10dp"
                 android:textSize="18sp"
